@@ -58,3 +58,5 @@ dkms.conf
 .pass
 .o
 .out
+02_LedDriver/build/test/results/
+02_LedDriver/build/test/runners/
