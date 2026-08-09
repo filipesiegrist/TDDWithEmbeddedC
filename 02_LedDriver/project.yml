@@ -61,7 +61,7 @@
     #- valgrind                       # memory analysis using valgrind. Requires valgrind to be installed (Linux only)
     #- bullseye                       # test coverage using bullseye. Requires bullseye for your platform
     #- command_hooks                  # write custom actions to be called at different points during the build process
-    #- compile_commands_json_db       # generate a compile_commands.json file
+    - compile_commands_json_db       # generate a compile_commands.json file
     #- dependencies                   # automatically fetch 3rd party libraries, etc.
     #- fake_function_framework        # use FFF instead of CMock
 
