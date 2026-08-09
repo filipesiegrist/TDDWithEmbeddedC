@@ -69,4 +69,10 @@ void test_LedMemoryIsNotReadableWhenTurningOff(void) {
     TEST_ASSERT_EQUAL_HEX(0xFF7F, virtualLeds);
 }
 
+void test_UpperAndLowerBounds(void) {
+    LedDriver_TurnOn(1);
+    LedDriver_TurnOn(16);
+    TEST_ASSERT_EQUAL_HEX(0x8001, virtualLeds);
+}
+
 #endif // TEST
