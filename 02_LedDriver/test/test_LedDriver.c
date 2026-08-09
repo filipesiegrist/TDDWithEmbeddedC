@@ -42,7 +42,7 @@ void test_TurnOnMultipleLeds(void) {
 void test_TurnOffAnyLed(void) {
     LedDriver_TurnAllOn();
     LedDriver_TurnOff(8);
-    TEST_ASSERT_EQUAL_HEX16(0x100, virtualLeds);
+    TEST_ASSERT_EQUAL_HEX16(0xFF7F, virtualLeds);
 }
 
 void test_AllOn(void) {
