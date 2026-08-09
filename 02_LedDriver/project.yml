@@ -101,10 +101,14 @@
     - -:test/support
   :source:
     - src/**
+    - ../common/RuntimeError/**
   :include:
     - src/** # In simple projects, this entry often duplicates :source
+    - ../mocks/**
+    - ../common/RuntimeError/**
   :support:
     - test/support
+    - ../mocks/**
   :libraries: []
 
 # You can even specify specific files to add or remove from your test
