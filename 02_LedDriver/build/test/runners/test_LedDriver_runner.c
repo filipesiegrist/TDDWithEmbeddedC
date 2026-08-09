@@ -113,13 +113,13 @@ static void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE l
 
   run_test_params_arr[0].func = test_LEDsOffAfterCreate;
   run_test_params_arr[0].name = "test_LEDsOffAfterCreate";
-  run_test_params_arr[0].line_num = 16;
+  run_test_params_arr[0].line_num = 19;
   run_test_params_arr[1].func = test_TurnOnOneLED;
   run_test_params_arr[1].name = "test_TurnOnOneLED";
-  run_test_params_arr[1].line_num = 24;
+  run_test_params_arr[1].line_num = 25;
   run_test_params_arr[2].func = test_TurnOffOneLed;
   run_test_params_arr[2].name = "test_TurnOffOneLed";
-  run_test_params_arr[2].line_num = 32;
+  run_test_params_arr[2].line_num = 30;
 
   for (int i = 0; i < 3; i++)
   {
