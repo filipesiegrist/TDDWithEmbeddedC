@@ -83,4 +83,15 @@ void test_OutOfBoundsChangesNothing(void) {
     TEST_ASSERT_EQUAL_HEX(0, virtualLeds);
 }
 
+//! Same as before, but for turn OFF
+void test_OutOfBoundsChangesNothingAtTurnOff(void) {
+    LedDriver_TurnAllOn();
+
+    LedDriver_TurnOff(-1);
+    LedDriver_TurnOff(0);
+    LedDriver_TurnOff(17);
+    LedDriver_TurnOff(3141);
+    TEST_ASSERT_EQUAL_HEX(0xFFFF, virtualLeds);
+}
+
 #endif // TEST
