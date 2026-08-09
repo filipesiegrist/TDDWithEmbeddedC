@@ -17,6 +17,12 @@ void LedDriver_TurnOff(int ledNumber) {
     *ledsAddress = 0;
 }
 
+void LedDriver_TurnAllOn(void) {
+    
+}
+
+
+
 static uint16_t convertLedNumberToBit(int ledNumber) {
     return (1 << (ledNumber - 1));
 }
