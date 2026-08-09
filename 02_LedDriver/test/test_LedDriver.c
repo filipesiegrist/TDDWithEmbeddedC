@@ -50,4 +50,15 @@ void test_AllOn(void) {
     TEST_ASSERT_EQUAL_HEX(0xFFFF, virtualLeds);
 }
 
+/*
+ * If the driver reads the memory, writing at the buffer after
+ * the creation of it will change its internal state and mess with
+ * the results
+ */
+void test_LedMemoryIsNotReadable(void) {
+    virtualLeds = 0xFFFF;
+    LedDriver_TurnOn(8);
+    TEST_ASSERT_EQUAL_HEX(0x80, virtualLeds);
+}
+
 #endif // TEST
