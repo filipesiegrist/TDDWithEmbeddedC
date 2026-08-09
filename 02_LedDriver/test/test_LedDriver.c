@@ -75,4 +75,12 @@ void test_UpperAndLowerBounds(void) {
     TEST_ASSERT_EQUAL_HEX(0x8001, virtualLeds);
 }
 
+void test_OutOfBoundsChangesNothing(void) {
+    LedDriver_TurnOn(-1);
+    LedDriver_TurnOn(0);
+    LedDriver_TurnOn(17);
+    LedDriver_TurnOn(3141);
+    TEST_ASSERT_EQUAL_HEX(0, virtualLeds);
+}
+
 #endif // TEST
