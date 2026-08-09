@@ -14,7 +14,8 @@ void LedDriver_Create(uint16_t* address) {
 }
 
 void LedDriver_TurnOn(int ledNumber) {
-    *ledsAddress |= convertLedNumberToBit(ledNumber);
+    ledsImage |= convertLedNumberToBit(ledNumber);
+    *ledsAddress = ledsImage;
 }
 
 void LedDriver_TurnOff(int ledNumber) {
