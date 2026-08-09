@@ -19,11 +19,13 @@ void LedDriver_TurnOn(int ledNumber) {
 }
 
 void LedDriver_TurnOff(int ledNumber) {
-    *ledsAddress &= ~convertLedNumberToBit(ledNumber);
+    ledsImage &= ~convertLedNumberToBit(ledNumber);
+    *ledsAddress = ledsImage;
 }
 
 void LedDriver_TurnAllOn(void) {
-    *ledsAddress = ALL_LEDS_ON;
+    ledsImage = ALL_LEDS_ON;
+    *ledsAddress = ledsImage;
 }
 
 // =============== Private methods =================

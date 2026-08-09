@@ -61,4 +61,12 @@ void test_LedMemoryIsNotReadable(void) {
     TEST_ASSERT_EQUAL_HEX(0x80, virtualLeds);
 }
 
+//! Similar to the one before but, at this time, check the turnOff
+void test_LedMemoryIsNotReadableWhenTurningOff(void) {
+    LedDriver_TurnAllOn();
+    virtualLeds = 0x0000;
+    LedDriver_TurnOff(8);
+    TEST_ASSERT_EQUAL_HEX(0xFF7F, virtualLeds);
+}
+
 #endif // TEST
