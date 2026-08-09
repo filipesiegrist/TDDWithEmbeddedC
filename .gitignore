@@ -60,5 +60,6 @@ dkms.conf
 .out
 */build/test/results/
 */build/test/runners/
+*/build/test/out/
 */build/artifacts/
 .vscode/
