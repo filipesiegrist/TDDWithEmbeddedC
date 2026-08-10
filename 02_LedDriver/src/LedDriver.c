@@ -6,6 +6,7 @@ static uint16_t ledsImage;
 
 static uint16_t convertLedNumberToBit(int ledNumber);
 static void updateHardware(void);
+static bool isLedOutOfBounds(int ledNumber);
 
 // =============== Public methods =================
 
@@ -16,7 +17,7 @@ void LedDriver_Create(uint16_t* address) {
 }
 
 void LedDriver_TurnOn(int ledNumber) {
-    if (ledNumber <= 0 || ledNumber > 16) {
+    if (isLedOutOfBounds(ledNumber)) {
         RUNTIME_ERROR("LED Driver: out-of-bounds LED", ledNumber);
         return;
     }
@@ -26,7 +27,7 @@ void LedDriver_TurnOn(int ledNumber) {
 }
 
 void LedDriver_TurnOff(int ledNumber) {
-    if (ledNumber <= 0 || ledNumber > 16) {
+    if (isLedOutOfBounds(ledNumber)) {
         RUNTIME_ERROR("LED Driver: out-of-bounds LED", ledNumber);
         return;
     }
@@ -48,4 +49,8 @@ static uint16_t convertLedNumberToBit(int ledNumber) {
 
 static void updateHardware(void) {
     *ledsAddress = ledsImage;
+}
+
+static bool isLedOutOfBounds(int ledNumber) {
+    return (ledNumber < FIRST_LED || ledNumber > LAST_LED);
 }
