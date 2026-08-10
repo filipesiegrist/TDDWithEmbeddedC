@@ -7,6 +7,7 @@ static uint16_t ledsImage;
 static uint16_t convertLedNumberToBit(int ledNumber);
 static void updateHardware(void);
 static bool isLedOutOfBounds(int ledNumber);
+static void setLedImageBit(int ledNumber);
 
 // =============== Public methods =================
 
@@ -22,7 +23,7 @@ void LedDriver_TurnOn(int ledNumber) {
         return;
     }
     
-    ledsImage |= convertLedNumberToBit(ledNumber);
+    setLedImageBit(ledNumber);
     updateHardware();
 }
 
@@ -53,4 +54,8 @@ static void updateHardware(void) {
 
 static bool isLedOutOfBounds(int ledNumber) {
     return (ledNumber < FIRST_LED || ledNumber > LAST_LED);
+}
+
+static void setLedImageBit(int ledNumber) {
+    ledsImage |= convertLedNumberToBit(ledNumber);
 }
