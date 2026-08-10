@@ -131,5 +131,15 @@ void test_OutOfBoundsLedsAreAlwaysOff(void) {
     TEST_ASSERT_FALSE(LedDriver_IsOn(LAST_LED + 1));
 }
 
+void test_IsOff(void) {
+    TEST_ASSERT_TRUE(LedDriver_IsOff(11));
+    LedDriver_TurnOn(11);
+    TEST_ASSERT_FALSE(LedDriver_IsOff(11));
+}
+
+void test_OutOfBoundsLedsAreAlwaysOffAtIsOff(void) {
+    TEST_ASSERT_TRUE(LedDriver_IsOff(FIRST_LED - 1));
+    TEST_ASSERT_TRUE(LedDriver_IsOff(LAST_LED + 1));
+}
 
 #endif // TEST
