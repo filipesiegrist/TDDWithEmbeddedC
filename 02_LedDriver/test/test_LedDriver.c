@@ -149,4 +149,10 @@ void test_OutOfBoundsLedsAreAlwaysOffAtIsOff(void) {
     TEST_ASSERT_TRUE(LedDriver_IsOff(LAST_LED + 1));
 }
 
+void test_AllOnOff(void) {
+    LedDriver_TurnAllOn();
+    LedDriver_TurnAllOff();
+    TEST_ASSERT_EQUAL_HEX(0, virtualLeds);
+}
+
 #endif // TEST
