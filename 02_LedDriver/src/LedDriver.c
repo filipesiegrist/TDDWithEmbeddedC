@@ -43,6 +43,10 @@ void LedDriver_TurnAllOn(void) {
     updateHardware();
 }
 
+bool LedDriver_IsOn(int ledNumber) {
+    return (ledsImage & convertLedNumberToBit(ledNumber));
+}
+
 // =============== Private methods =================
 
 static uint16_t convertLedNumberToBit(int ledNumber) {
