@@ -11,6 +11,7 @@ static uint16_t virtualLeds;
 void setUp(void)
 {
     LedDriver_Create(&virtualLeds);
+    RuntimeErrorStub_Reset();
 }
 
 void tearDown(void)
@@ -95,7 +96,7 @@ void test_OutOfBoundsTurnOffDoesNoHarm(void) {
     TEST_ASSERT_EQUAL_HEX(0xFFFF, virtualLeds);
 }
 
-void test_OutOfBoundsProducesRuntimeError(void) {
+void test_OutOfBoundsTurnOnProducesRuntimeError(void) {
     LedDriver_TurnOn(-1);
     TEST_ASSERT_EQUAL_STRING(
         "LED Driver: out-of-bounds LED",
@@ -103,6 +104,18 @@ void test_OutOfBoundsProducesRuntimeError(void) {
     );
     TEST_ASSERT_EQUAL(
         -1,
+        RuntimeErrorStub_GetLastParameter()
+    );
+}
+
+void test_OutOfBoundsTurnOffProducesRuntimeError(void) {
+    LedDriver_TurnOff(17);
+    TEST_ASSERT_EQUAL_STRING(
+        "LED Driver: out-of-bounds LED",
+        RuntimeErrorStub_GetLastError()
+    );
+    TEST_ASSERT_EQUAL(
+        17,
         RuntimeErrorStub_GetLastParameter()
     );
 }
