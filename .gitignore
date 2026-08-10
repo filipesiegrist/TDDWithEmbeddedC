@@ -61,5 +61,6 @@ dkms.conf
 */build/test/results/
 */build/test/runners/
 */build/test/out/
+*/build/test/dependencies/
 */build/artifacts/
 .vscode/
