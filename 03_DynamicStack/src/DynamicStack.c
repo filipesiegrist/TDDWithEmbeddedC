@@ -1,4 +1,3 @@
-
 #include "DynamicStack.h"
 
 #include <stdlib.h>
@@ -27,7 +26,6 @@ DYNAMICSTACK_TYPE* DynamicStack__Initialize(uint16_t type_size) {
 }
 
 bool DynamicStack__IsEmpty(const DYNAMICSTACK_TYPE* stack) {
-    if (stack == NULL) return true;
     return IsEmpty(stack);
 }
 
