@@ -15,6 +15,7 @@ static void* GetNextPtr(DYNAMICSTACK_TYPE* stack);
 static void* GetStackPtr(DYNAMICSTACK_TYPE* stack, uint16_t position);
 static uint16_t StackSize(const DYNAMICSTACK_TYPE* stack);
 static void UpdateCapacity(DYNAMICSTACK_TYPE* stack);
+static void CleanUpStackElements(DYNAMICSTACK_TYPE* stack);
 
 DYNAMICSTACK_TYPE* DynamicStack__Initialize(uint16_t type_size) {
     DYNAMICSTACK_TYPE* Stack_Ptr;
@@ -62,6 +63,7 @@ bool DynamicStack__Pop(DYNAMICSTACK_TYPE* stack, void* item) {
 
 void DynamicStack__Clear(DYNAMICSTACK_TYPE** stack) {
     if (stack == NULL) return;
+    CleanUpStackElements(*stack);
     free(*stack);
     *stack = NULL;
 }
@@ -103,6 +105,10 @@ static void UpdateCapacity(DYNAMICSTACK_TYPE* stack) {
     stack->Stack_Items_Ptr = realloc(stack->Stack_Items_Ptr, new_size);
 }
 
-
+static void CleanUpStackElements(DYNAMICSTACK_TYPE* stack) {
+    if (stack->Stack_Items_Ptr != NULL) {
+        free(stack->Stack_Items_Ptr);
+    }
+}
 
 #endif // DYNAMIC_STACK_C_
