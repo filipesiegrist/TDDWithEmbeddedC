@@ -206,6 +206,42 @@ void test_GivenEmptyBuffer_WhenZeroIsQueued_ThenZeroIsDequeued(void)
     );
 }
 
+void test_GivenTwoItemsQueued_WhenDequeued_ThenValuesAreReturnedInFifoOrder(void)
+{
+    float first_in;
+    float second_in;
+    float first_out;
+    float second_out;
+
+    first_in = 1.5f;
+    second_in = 2.7f;
+    first_out = 0.0f;
+    second_out = 0.0f;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &first_in
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &second_in
+    );
+
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &first_out
+    );
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &second_out
+    );
+
+    TEST_ASSERT_EQUAL_FLOAT(first_in, first_out);
+    TEST_ASSERT_EQUAL_FLOAT(second_in, second_out);
+}
+
 // void test_(void)
 // {
 //     
