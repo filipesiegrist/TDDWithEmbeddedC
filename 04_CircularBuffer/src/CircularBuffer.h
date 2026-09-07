@@ -7,6 +7,8 @@
 typedef int CIRCULARBUFFER_TYPE;
 typedef float CIRCULARBUTTER_ITEM_TYPE;
 
+#define CIRCULARBUFFER_CAPACITY 50
+
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size);
 
