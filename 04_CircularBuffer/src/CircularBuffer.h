@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 typedef int CIRCULARBUFFER_TYPE;
+typedef float CIRCULARBUTTER_ITEM_TYPE;
 
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size);

@@ -4,7 +4,7 @@
 #include <string.h>
 
 static uint16_t Buffer_Size;
-static float Buffer_Item;
+static CIRCULARBUTTER_ITEM_TYPE Buffer_Item;
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 
@@ -27,13 +27,10 @@ uint16_t CircularBuffer_GetSize(const CIRCULARBUFFER_TYPE* buffer) {
 }
 
 bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
-    float out_item;
-
     if (item == NULL) return false;
     if (IsEmpty(buffer)) return false;
     
     Buffer_Size = 0;
-    out_item = 2289;
     memcpy(item, &Buffer_Item, sizeof(float));
     return true;
 }
