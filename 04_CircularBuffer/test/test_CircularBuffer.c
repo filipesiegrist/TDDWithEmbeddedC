@@ -333,6 +333,70 @@ void test_GivenThreeItemsQueued_WhenDequeued_ThenValuesAreReturnedInFifoOrder(vo
     TEST_ASSERT_EQUAL_FLOAT(item3, out3);
 }
 
+void test_GivenInterleavedQueuesAndDequeues_ThenValuesAreReturnedInFifoOrder(void)
+{
+    float in1;
+    float in2;
+    float in3;
+    float in4;
+    float out1;
+    float out2;
+    float out3;
+    float out4;
+
+    in1 = 1.0f;
+    in2 = 2.0f;
+    in3 = 3.0f;
+    in4 = 4.0f;
+    out1 = 0.0f;
+    out2 = 0.0f;
+    out3 = 0.0f;
+    out4 = 0.0f;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &in1
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &in2
+    );
+
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &out1
+    );
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &in3
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &in4
+    );
+
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &out2
+    );
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &out3
+    );
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &out4
+    );
+
+    TEST_ASSERT_EQUAL_FLOAT(in1, out1);
+    TEST_ASSERT_EQUAL_FLOAT(in2, out2);
+    TEST_ASSERT_EQUAL_FLOAT(in3, out3);
+    TEST_ASSERT_EQUAL_FLOAT(in4, out4);
+}
+
 // void test_(void)
 // {
 //     
