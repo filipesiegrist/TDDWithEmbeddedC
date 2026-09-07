@@ -87,14 +87,9 @@ void test_GivenEmptyBuffer_WhenSuccessfulQueueThenReturnTrue(void)
     );
 }
 
-void test_GivenEmptyBuffer_WhenQueueThenItsNotEmpty(void)
+void test_WhenSingleItemBuffer_ThenItsNotEmpty(void)
 {
-    Simple_Float_Buffer = GetSimpleEmptyBuffer();
-    Simple_Float_Item = 33.3;
-    (void) CircularBuffer_Queue(
-        Simple_Float_Buffer,
-        (void*) &Simple_Float_Item
-    );
+    Simple_Float_Buffer = GetSingleItemBuffer();
     TEST_ASSERT_FALSE(
         CircularBuffer_IsEmpty(Simple_Float_Buffer)
     );
