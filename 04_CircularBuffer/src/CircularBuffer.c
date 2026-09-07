@@ -6,7 +6,6 @@
 //! Static variables and methods
 
 static uint16_t Buffer_Size;
-static CIRCULARBUTTER_ITEM_TYPE Buffer_Item;
 static CIRCULARBUTTER_ITEM_TYPE Buffer_Array[CIRCULARBUFFER_CAPACITY];
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
@@ -16,7 +15,6 @@ static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer);
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
     Buffer_Size = 0;
-    Buffer_Item = 0;
     return NULL;
 }
 
@@ -36,7 +34,6 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     if (item == NULL) return false;
     if (IsEmpty(buffer)) return false;
     
-    memcpy(item, &Buffer_Item, GetItemSize(buffer));
     memcpy(item, &Buffer_Array[0], GetItemSize(buffer));
 
     Buffer_Array[0] = Buffer_Array[1];
@@ -46,7 +43,6 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
     memcpy(&Buffer_Array[Buffer_Size], item, GetItemSize(buffer));
-    memcpy(&Buffer_Item, item, GetItemSize(buffer));
     Buffer_Size++;
     return true;
 }
