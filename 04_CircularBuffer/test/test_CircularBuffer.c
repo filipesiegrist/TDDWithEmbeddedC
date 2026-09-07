@@ -147,10 +147,21 @@ void test_GivenSingleItemBuffer_WhenDequeue_ThenReturnTrue(void)
     );
 }
 
-// void test_(void)
-// {
-//     
-// }
+void test_GivenSingleItemBuffer_WhenDequeu_ThenItIsEmpty(void)
+{
+    float out_item;
+
+    Simple_Float_Buffer = GetSingleItemBuffer();
+    
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &out_item
+    );
+
+    TEST_ASSERT_TRUE(
+        CircularBuffer_IsEmpty(Simple_Float_Buffer)
+    );
+}
 
 // void test_(void)
 // {
