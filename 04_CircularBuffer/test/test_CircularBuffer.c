@@ -183,10 +183,28 @@ void test_GivenSingleItemBuffer_WhenDequeue_ThenSizeIsZero(void)
 
 }
 
-// void test_(void)
-// {
-//     
-// }
+void test_GivenEmptyBuffer_WhenZeroIsQueued_ThenZeroIsDequeued(void)
+{
+    float in_item;
+    float out_item;
+
+    in_item = 0;
+    out_item = 0.112;
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &in_item
+    );
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &out_item
+    );
+    TEST_ASSERT_EQUAL(
+        in_item,
+        out_item
+    );
+}
 
 // void test_(void)
 // {

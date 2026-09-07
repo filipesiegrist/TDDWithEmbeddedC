@@ -4,11 +4,13 @@
 #include <string.h>
 
 static uint16_t Buffer_Size;
+static float Buffer_Item;
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
     Buffer_Size = 0;
+    Buffer_Item = 0;
     return NULL;
 }
 
@@ -32,12 +34,13 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     
     Buffer_Size = 0;
     out_item = 2289;
-    memcpy(item, &out_item, sizeof(float));
+    memcpy(item, &Buffer_Item, sizeof(float));
     return true;
 }
 
-bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, void* item) {
+bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
     Buffer_Size = 1;
+    memcpy(&Buffer_Item, item, sizeof(float));
     return true;
 }
 
