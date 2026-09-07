@@ -8,6 +8,7 @@
 
 //! Helper variables
 static CIRCULARBUFFER_TYPE* Simple_Float_Buffer;
+static float Simple_Float_Item;
 
 //! Helper function prototypes
 CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void);
@@ -20,6 +21,7 @@ void setUp(void)
 void tearDown(void)
 {
     Simple_Float_Buffer = NULL;
+    Simple_Float_Item = 0;
 }
 
 void test_WhenBufferIsCreated_ThenItIsEmpty(void)
@@ -60,17 +62,41 @@ void test_GivenEmptyBufferCreated_WhenDequeue_ThenReturnFalse(void)
 
 void test_GivenEmptyBufferCreated_WhenDequeue_ThenDontChangeItem(void)
 {
-    float simple_item;
-    
     Simple_Float_Buffer = GetSimpleEmptyBuffer();
-    simple_item = 67.;
+    Simple_Float_Item = 67.;
     
     (void) CircularBuffer_Dequeue(
         Simple_Float_Buffer,
-        &simple_item
+        (void*) &Simple_Float_Item
     );
     
-    TEST_ASSERT_EQUAL(67., simple_item);
+    TEST_ASSERT_EQUAL(67., Simple_Float_Item);
+}
+
+void test_GivenEmptyBuffer_WhenSuccessfulQueueThenReturnTrue(void)
+{
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+    Simple_Float_Item = 33.3;
+    
+    TEST_ASSERT_TRUE(
+        CircularBuffer_Queue(
+            Simple_Float_Buffer,
+            (void*) &Simple_Float_Item
+        )
+    );
+}
+
+void test_GivenEmptyBuffer_WhenQueueThenItsNotEmpty(void)
+{
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+    Simple_Float_Item = 33.3;
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &Simple_Float_Item
+    );
+    TEST_ASSERT_FALSE(
+        CircularBuffer_IsEmpty(Simple_Float_Buffer)
+    );
 }
 
 // void test_(void)

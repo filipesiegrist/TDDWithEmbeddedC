@@ -3,12 +3,15 @@
 
 #include <string.h>
 
+static bool Is_Empty;
+
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
+    Is_Empty = true;
     return NULL;
 }
 
 bool CircularBuffer_IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
-    return true;
+    return Is_Empty;
 }
 
 bool CircularBuffer_IsFull(const CIRCULARBUFFER_TYPE* buffer) {
@@ -25,4 +28,8 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     return false;
 }
 
+bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, void* item) {
+    Is_Empty = false;
+    return true;
+}
 

@@ -14,5 +14,6 @@ bool CircularBuffer_IsFull(const CIRCULARBUFFER_TYPE* buffer);
 uint16_t CircularBuffer_GetSize(const CIRCULARBUFFER_TYPE* buffer);
 
 bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item);
+bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, void* item);
 
 #endif // CIRCULARBUFFER_H
