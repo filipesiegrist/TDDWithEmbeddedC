@@ -97,7 +97,10 @@ void test_WhenSingleItemBuffer_ThenItsNotEmpty(void)
 
 void test_GivenBufferWithOneItemThenItsNotFull(void)
 {
-    
+    Simple_Float_Buffer = GetSingleItemBuffer();
+    TEST_ASSERT_FALSE(
+        CircularBuffer_IsFull(Simple_Float_Buffer)
+    );
 }
 
 // void test_(void)
