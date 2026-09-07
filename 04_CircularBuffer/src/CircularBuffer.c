@@ -13,7 +13,7 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
 }
 
 bool CircularBuffer_IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
-    return (Buffer_Size == 0);
+    return IsEmpty(buffer);
 }
 
 bool CircularBuffer_IsFull(const CIRCULARBUFFER_TYPE* buffer) {
