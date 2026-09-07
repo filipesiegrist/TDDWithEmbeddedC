@@ -242,10 +242,32 @@ void test_GivenTwoItemsQueued_WhenDequeued_ThenValuesAreReturnedInFifoOrder(void
     TEST_ASSERT_EQUAL_FLOAT(second_in, second_out);
 }
 
-// void test_(void)
-// {
-//     
-// }
+void test_GivenThreeItemsQueued_WhenGetSizeIsCalled_ThenReturnThree(void)
+{
+    float item1 = 1.0f;
+    float item2 = 2.0f;
+    float item3 = 3.0f;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &item2
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &item3
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &item1
+    );
+
+    TEST_ASSERT_EQUAL_UINT16(
+        3,
+        CircularBuffer_GetSize(Simple_Float_Buffer)
+    );
+}
 
 // void test_(void)
 // {

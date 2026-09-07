@@ -41,7 +41,7 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 }
 
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
-    Buffer_Size = 1;
+    Buffer_Size++;
     memcpy(&Buffer_Item, item, GetItemSize(buffer));
     return true;
 }
