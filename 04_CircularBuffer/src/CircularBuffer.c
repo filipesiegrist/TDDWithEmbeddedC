@@ -3,10 +3,15 @@
 
 #include <string.h>
 
+//! Static variables and methods
+
 static uint16_t Buffer_Size;
 static CIRCULARBUTTER_ITEM_TYPE Buffer_Item;
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
+static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer);
+
+//! Public implementations
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
     Buffer_Size = 0;
@@ -31,16 +36,22 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     if (IsEmpty(buffer)) return false;
     
     Buffer_Size = 0;
-    memcpy(item, &Buffer_Item, sizeof(float));
+    memcpy(item, &Buffer_Item, GetItemSize(buffer));
     return true;
 }
 
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
     Buffer_Size = 1;
-    memcpy(&Buffer_Item, item, sizeof(float));
+    memcpy(&Buffer_Item, item, GetItemSize(buffer));
     return true;
 }
 
+//! Private implementations
+
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
     return (Buffer_Size == 0);
+}
+
+static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer) {
+    return sizeof(CIRCULARBUTTER_ITEM_TYPE);
 }
