@@ -269,6 +269,45 @@ void test_GivenThreeItemsQueued_WhenGetSizeIsCalled_ThenReturnThree(void)
     );
 }
 
+void test_GivenFourItemsQueuedAndTwoDequeued_WhenGetSizeIsCalled_ThenReturnTwo(void)
+{
+    float item = 1.0f;
+    float out_item = 0.0f;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &item
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &item
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &item
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*) &item
+    );
+
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &out_item
+    );
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &out_item
+    );
+
+    TEST_ASSERT_EQUAL_UINT16(
+        2,
+        CircularBuffer_GetSize(Simple_Float_Buffer)
+    );
+}
+
 // void test_(void)
 // {
 //     
