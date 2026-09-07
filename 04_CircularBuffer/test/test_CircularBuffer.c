@@ -12,6 +12,7 @@ static float Simple_Float_Item;
 
 //! Helper function prototypes
 CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void);
+CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void);
 
 
 void setUp(void)
@@ -99,10 +100,10 @@ void test_GivenEmptyBuffer_WhenQueueThenItsNotEmpty(void)
     );
 }
 
-// void test_(void)
-// {
-//     
-// }
+void test_GivenBufferWithOneItemThenItsNotFull(void)
+{
+    
+}
 
 // void test_(void)
 // {
@@ -119,6 +120,19 @@ void test_GivenEmptyBuffer_WhenQueueThenItsNotEmpty(void)
 CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void) {
     CIRCULARBUFFER_TYPE* buf;
     buf = CircularBuffer_Create(sizeof(float));
+    return buf;
+}
+
+CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void) {
+    CIRCULARBUFFER_TYPE* buf;
+    float item;
+
+    buf = GetSimpleEmptyBuffer();
+    item = 33.3;
+    (void) CircularBuffer_Queue(
+        buf,
+        (void*) &item
+    );
     return buf;
 }
 
