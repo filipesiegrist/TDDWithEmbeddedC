@@ -95,13 +95,67 @@ void test_WhenSingleItemBuffer_ThenItsNotEmpty(void)
     );
 }
 
-void test_GivenBufferWithOneItemThenItsNotFull(void)
+void test_GivenBufferWithOneItem_ThenItsNotFull(void)
 {
     Simple_Float_Buffer = GetSingleItemBuffer();
     TEST_ASSERT_FALSE(
         CircularBuffer_IsFull(Simple_Float_Buffer)
     );
 }
+
+void test_GivenBufferWithOneItem_ThenSizeIsOne(void)
+{
+    Simple_Float_Buffer = GetSingleItemBuffer();
+    TEST_ASSERT_EQUAL_UINT16(
+        1,
+        CircularBuffer_GetSize(Simple_Float_Buffer)
+    );
+}
+
+// void test_(void)
+// {
+//     
+// }
+
+// void test_(void)
+// {
+//     
+// }
+
+// void test_(void)
+// {
+//     
+// }
+
+// void test_(void)
+// {
+//     
+// }
+
+// void test_(void)
+// {
+//     
+// }
+
+// void test_(void)
+// {
+//     
+// }
+
+// void test_(void)
+// {
+//     
+// }
+
+// void test_(void)
+// {
+//     
+// }
+
+// void test_(void)
+// {
+//     
+// }
 
 // void test_(void)
 // {
