@@ -32,6 +32,7 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     Is_Empty = false;
+    Buffer_Size = 1;
     return true;
 }
 
