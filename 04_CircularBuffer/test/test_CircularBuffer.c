@@ -112,10 +112,27 @@ void test_GivenBufferWithOneItem_ThenSizeIsOne(void)
     );
 }
 
-// void test_(void)
-// {
-//     
-// }
+void test_GivenEmptyBuffer_WhenItemIsInserted_ThenSameItemIsRetrieved(void)
+{
+    float out_float_item;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+    Simple_Float_Item = 2289;
+    out_float_item = 0;
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void *) &Simple_Float_Item
+    );
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void *) &out_float_item
+    );
+    TEST_ASSERT_EQUAL(
+        Simple_Float_Item,
+        out_float_item
+    );
+}
 
 // void test_(void)
 // {
