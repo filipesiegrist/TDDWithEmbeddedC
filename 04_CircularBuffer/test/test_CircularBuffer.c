@@ -308,6 +308,31 @@ void test_GivenFourItemsQueuedAndTwoDequeued_WhenGetSizeIsCalled_ThenReturnTwo(v
     );
 }
 
+void test_GivenThreeItemsQueued_WhenDequeued_ThenValuesAreReturnedInFifoOrder(void)
+{
+    float item1 = 1.5f;
+    float item2 = 2.7f;
+    float item3 = 3.14f;
+
+    float out1 = 0.0f;
+    float out2 = 0.0f;
+    float out3 = 0.0f;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+
+    (void) CircularBuffer_Queue(Simple_Float_Buffer, (void*)&item1);
+    (void) CircularBuffer_Queue(Simple_Float_Buffer, (void*)&item2);
+    (void) CircularBuffer_Queue(Simple_Float_Buffer, (void*)&item3);
+
+    (void) CircularBuffer_Dequeue(Simple_Float_Buffer, (void*)&out1);
+    (void) CircularBuffer_Dequeue(Simple_Float_Buffer, (void*)&out2);
+    (void) CircularBuffer_Dequeue(Simple_Float_Buffer, (void*)&out3);
+
+    TEST_ASSERT_EQUAL_FLOAT(item1, out1);
+    TEST_ASSERT_EQUAL_FLOAT(item2, out2);
+    TEST_ASSERT_EQUAL_FLOAT(item3, out3);
+}
+
 // void test_(void)
 // {
 //     
