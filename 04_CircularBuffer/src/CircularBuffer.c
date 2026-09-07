@@ -31,6 +31,7 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     if (Is_Empty == true) return false;
     
     Is_Empty = true;
+    Buffer_Size = 0;
     out_item = 2289;
     memcpy(item, &out_item, sizeof(float));
     return true;
