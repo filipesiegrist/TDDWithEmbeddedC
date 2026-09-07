@@ -134,10 +134,18 @@ void test_GivenEmptyBuffer_WhenItemIsInserted_ThenSameItemIsRetrieved(void)
     );
 }
 
-// void test_(void)
-// {
-//     
-// }
+void test_GivenSingleItemBuffer_WhenDequeue_ThenReturnTrue(void)
+{
+    float out_item;
+
+    Simple_Float_Buffer = GetSingleItemBuffer();
+    TEST_ASSERT_TRUE(
+        CircularBuffer_Dequeue(
+            Simple_Float_Buffer,
+            (void*) &out_item
+        )
+    );
+}
 
 // void test_(void)
 // {
