@@ -394,10 +394,22 @@ void test_GivenInterleavedQueuesAndDequeues_ThenValuesAreReturnedInFifoOrder(voi
     TEST_ASSERT_EQUAL_FLOAT(Float_Input_Item_4, Float_Output_Item_4);
 }
 
-// void test_(void)
-// {
-//     
-// }
+void test_GivenTwoBuffersCreated_WhenPushingToOne_ThenOtherRemainsEmpty(void)
+{
+    CIRCULARBUFFER_TYPE* second_float_buffer;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+    second_float_buffer = GetSimpleEmptyBuffer();
+    Float_Input_Item = 6755.009;
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void *) &Float_Input_Item
+    );
+
+    TEST_ASSERT_TRUE(
+        CircularBuffer_IsEmpty(second_float_buffer)
+    );
+}
 
 // void test_(void)
 // {
