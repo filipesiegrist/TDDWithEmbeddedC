@@ -4,8 +4,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef int CIRCULARBUFFER_TYPE;
 typedef float CIRCULARBUTTER_ITEM_TYPE;
+typedef struct {
+    CIRCULARBUTTER_ITEM_TYPE* Buffer_Ptr
+} CIRCULARBUFFER_TYPE;
 
 #define CIRCULARBUFFER_CAPACITY 50
 

@@ -9,7 +9,7 @@
 static uint16_t Buffer_Size;
 static uint16_t Head;
 static uint16_t Tail;
-static CIRCULARBUTTER_ITEM_TYPE* Buffer_Ptr;
+static CIRCULARBUFFER_TYPE Static_Buffer;
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer);
@@ -20,7 +20,10 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
     Buffer_Size = 0;
     Head = 0;
     Tail = 0;
-    Buffer_Ptr = Memory_Allocate(type_size*CIRCULARBUFFER_CAPACITY);
+
+    Static_Buffer.Buffer_Ptr =
+        Memory_Allocate(type_size*CIRCULARBUFFER_CAPACITY);
+    
     return NULL;
 }
 
@@ -40,7 +43,7 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     if (item == NULL) return false;
     if (IsEmpty(buffer)) return false;
     
-    memcpy(item, Buffer_Ptr+Tail, GetItemSize(buffer));
+    memcpy(item, Static_Buffer.Buffer_Ptr+Tail, GetItemSize(buffer));
 
     Tail++;
     Buffer_Size--;
@@ -48,7 +51,7 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 }
 
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
-    memcpy(Buffer_Ptr+Head, item, GetItemSize(buffer));
+    memcpy(Static_Buffer.Buffer_Ptr+Head, item, GetItemSize(buffer));
     Buffer_Size++;
     Head++;
     return true;
