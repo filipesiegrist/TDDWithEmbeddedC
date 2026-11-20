@@ -446,6 +446,43 @@ void test_GivenTwoBuffersWithDifferentSizes_WhenGetSizeIsCalled_ThenReturnRespec
     );
 }
 
+void test_GivenTwoBuffers_WhenInterleavingQueuesAndDequeues_ThenMaintainIndependentFifoOrder(void)
+{
+    CIRCULARBUFFER_TYPE* second_float_buffer;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+    second_float_buffer = GetSimpleEmptyBuffer();
+
+    Float_Input_Item_1 = 10.0f;
+    Float_Input_Item_2 = 20.0f;
+    Float_Input_Item_3 = 30.0f;
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*)&Float_Input_Item_1
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*)&Float_Input_Item_2
+    );
+    (void) CircularBuffer_Queue(
+        second_float_buffer,
+        (void*)&Float_Input_Item_3
+    );
+
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*)&Float_Output_Item_1
+    );
+    (void) CircularBuffer_Dequeue(
+        second_float_buffer,
+        (void*)&Float_Output_Item_2
+    );
+
+    TEST_ASSERT_EQUAL_FLOAT(Float_Input_Item_1, Float_Output_Item_1);
+    TEST_ASSERT_EQUAL_FLOAT(Float_Input_Item_3, Float_Output_Item_2);
+}
+
 // void test_(void)
 // {
 //     
