@@ -12,16 +12,16 @@ static CIRCULARBUTTER_ITEM_TYPE* GetTail(const CIRCULARBUFFER_TYPE* buffer);
 //! Public implementations
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
-    CIRCULARBUFFER_TYPE* Static_Buffer_Ptr;
-    Static_Buffer_Ptr = Memory_Allocate(sizeof(CIRCULARBUFFER_TYPE));
+    CIRCULARBUFFER_TYPE* new_buffer;
+    new_buffer = Memory_Allocate(sizeof(CIRCULARBUFFER_TYPE));
 
-    Static_Buffer_Ptr->Head = 0;
-    Static_Buffer_Ptr->Tail = 0;
-    Static_Buffer_Ptr->Buffer_Size = 0;
-    Static_Buffer_Ptr->Buffer_Ptr =
+    new_buffer->Head = 0;
+    new_buffer->Tail = 0;
+    new_buffer->Buffer_Size = 0;
+    new_buffer->Buffer_Ptr =
         Memory_Allocate(type_size*CIRCULARBUFFER_CAPACITY);
     
-    return Static_Buffer_Ptr;
+    return new_buffer;
 }
 
 bool CircularBuffer_IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
