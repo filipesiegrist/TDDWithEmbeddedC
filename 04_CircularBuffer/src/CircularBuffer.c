@@ -56,7 +56,7 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
     memcpy(GetHead(buffer), item, GetItemSize(buffer));
-    Static_Buffer_Ptr->Buffer_Size++;
+    buffer->Buffer_Size++;
     Head++;
     return true;
 }
@@ -72,7 +72,7 @@ static CIRCULARBUTTER_ITEM_TYPE* GetTail(const CIRCULARBUFFER_TYPE* buffer) {
 }
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
-    return (Static_Buffer_Ptr->Buffer_Size == 0);
+    return (buffer->Buffer_Size == 0);
 }
 
 static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer) {
