@@ -62,11 +62,11 @@ bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
 //! Private implementations
 
 static CIRCULARBUTTER_ITEM_TYPE* GetHead(const CIRCULARBUFFER_TYPE* buffer) {
-    return &(Static_Buffer.Buffer_Ptr[Head]);
+    return &(buffer->Buffer_Ptr[Head]);
 }
 
 static CIRCULARBUTTER_ITEM_TYPE* GetTail(const CIRCULARBUFFER_TYPE* buffer) {
-    return &(Static_Buffer.Buffer_Ptr[Tail]);
+    return &(buffer->Buffer_Ptr[Tail]);
 }
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
