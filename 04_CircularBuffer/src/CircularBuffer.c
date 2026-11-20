@@ -6,9 +6,6 @@
 
 //! Static variables and methods
 
-static uint16_t Head;
-static uint16_t Tail;
-
 static CIRCULARBUFFER_TYPE* Static_Buffer_Ptr;
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
@@ -19,9 +16,6 @@ static CIRCULARBUTTER_ITEM_TYPE* GetTail(const CIRCULARBUFFER_TYPE* buffer);
 //! Public implementations
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
-    Head = 0;
-    Tail = 0;
-
     Static_Buffer_Ptr = Memory_Allocate(sizeof(CIRCULARBUFFER_TYPE));
 
     Static_Buffer_Ptr->Head = 0;
@@ -51,7 +45,6 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     
     memcpy(item, GetTail(buffer), GetItemSize(buffer));
 
-    Tail++;
     buffer->Tail++;
     buffer->Buffer_Size--;
     return true;
@@ -61,7 +54,6 @@ bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
     memcpy(GetHead(buffer), item, GetItemSize(buffer));
     buffer->Buffer_Size++;
     buffer->Head++;
-    Head++;
     return true;
 }
 
