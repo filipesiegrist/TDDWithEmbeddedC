@@ -20,7 +20,7 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
     Buffer_Size = 0;
     Head = 0;
     Tail = 0;
-    Buffer_Ptr = Memory_Allocate(sizeof(CIRCULARBUTTER_ITEM_TYPE)*CIRCULARBUFFER_CAPACITY);
+    Buffer_Ptr = Memory_Allocate(type_size*CIRCULARBUFFER_CAPACITY);
     return NULL;
 }
 
