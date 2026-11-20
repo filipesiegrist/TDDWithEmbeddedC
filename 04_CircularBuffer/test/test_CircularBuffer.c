@@ -4,6 +4,7 @@
 #include "unity.h"
 
 #include "CircularBuffer.h"
+#include "Memory.h"
 
 
 //! Helper variables
