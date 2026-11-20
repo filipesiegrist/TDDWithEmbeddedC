@@ -412,6 +412,40 @@ void test_GivenTwoBuffersCreated_WhenPushingToOne_ThenOtherRemainsEmpty(void)
     );
 }
 
+void test_GivenTwoBuffersWithDifferentSizes_WhenGetSizeIsCalled_ThenReturnRespectiveSizes(void)
+{
+    CIRCULARBUFFER_TYPE* second_float_buffer;
+
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+    second_float_buffer = GetSimpleEmptyBuffer();
+
+    Float_Input_Item_1 = 10.0f;
+    Float_Input_Item_2 = 20.0f;
+    Float_Input_Item_3 = 30.0f;
+
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*)&Float_Input_Item_1
+    );
+    (void) CircularBuffer_Queue(
+        Simple_Float_Buffer,
+        (void*)&Float_Input_Item_2
+    );
+    (void) CircularBuffer_Queue(
+        second_float_buffer,
+        (void*)&Float_Input_Item_3
+    );
+
+    TEST_ASSERT_EQUAL_UINT16(
+        2,
+        CircularBuffer_GetSize(Simple_Float_Buffer)
+    );
+    TEST_ASSERT_EQUAL_UINT16(
+        1,
+        CircularBuffer_GetSize(second_float_buffer)
+    );
+}
+
 // void test_(void)
 // {
 //     
