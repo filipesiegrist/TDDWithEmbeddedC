@@ -4,10 +4,6 @@
 
 #include <string.h>
 
-//! Static variables and methods
-
-static CIRCULARBUFFER_TYPE* Static_Buffer_Ptr;
-
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer);
 static CIRCULARBUTTER_ITEM_TYPE* GetHead(const CIRCULARBUFFER_TYPE* buffer);
@@ -16,6 +12,7 @@ static CIRCULARBUTTER_ITEM_TYPE* GetTail(const CIRCULARBUFFER_TYPE* buffer);
 //! Public implementations
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size) {
+    CIRCULARBUFFER_TYPE* Static_Buffer_Ptr;
     Static_Buffer_Ptr = Memory_Allocate(sizeof(CIRCULARBUFFER_TYPE));
 
     Static_Buffer_Ptr->Head = 0;
