@@ -531,6 +531,20 @@ void test_GivenBufferWithSize60_When60ItemsQueued_ThenIsFull(void)
     );
 }
 
+void test_GivenFullBuffer_WhenQueue_ThenReturnFalse(void)
+{
+    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(2);
+    FillBufferWithFloats(Simple_Float_Buffer, 2, 1.0f);
+    Float_Input_Item = 99.0f;
+
+    TEST_ASSERT_FALSE(
+        CircularBuffer_Queue(
+            Simple_Float_Buffer,
+            (void*) &Float_Input_Item
+        )
+    );
+}
+
 
 //! Helper functions
 
