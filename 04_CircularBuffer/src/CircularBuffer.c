@@ -20,7 +20,7 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
     new_buffer->Size = 0;
     new_buffer->Capacity = capacity;
     new_buffer->Buffer_Ptr =
-        Memory_Allocate(type_size*CIRCULARBUFFER_CAPACITY);
+        Memory_Allocate(type_size*capacity);
     
     return new_buffer;
 }
