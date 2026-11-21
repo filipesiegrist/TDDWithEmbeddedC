@@ -545,6 +545,24 @@ void test_GivenFullBuffer_WhenQueue_ThenReturnFalse(void)
     );
 }
 
+void test_GivenFullBuffer_WhenQueueAndDequeue_ThenRetrieveLastValidItem(void)
+{
+    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(2);
+    Float_Input_Item_1 = 10.0f;
+    Float_Input_Item_2 = 20.0f;
+    Float_Input_Item_3 = 99.0f;
+
+    (void) CircularBuffer_Queue(Simple_Float_Buffer, (void*) &Float_Input_Item_1);
+    (void) CircularBuffer_Queue(Simple_Float_Buffer, (void*) &Float_Input_Item_2);
+    (void) CircularBuffer_Queue(Simple_Float_Buffer, (void*) &Float_Input_Item_3);
+
+    (void) CircularBuffer_Dequeue(Simple_Float_Buffer, (void*) &Float_Output_Item_1);
+    (void) CircularBuffer_Dequeue(Simple_Float_Buffer, (void*) &Float_Output_Item_2);
+
+    TEST_ASSERT_EQUAL_FLOAT(Float_Input_Item_1, Float_Output_Item_1);
+    TEST_ASSERT_EQUAL_FLOAT(Float_Input_Item_2, Float_Output_Item_2);
+}
+
 
 //! Helper functions
 
