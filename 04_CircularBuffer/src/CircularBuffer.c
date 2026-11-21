@@ -54,7 +54,7 @@ bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
     
     memcpy(GetHead(buffer), item, GetItemSize(buffer));
     buffer->Size++;
-    buffer->Head++;
+    buffer->Head = (buffer->Head + 1) % buffer->Capacity;
     return true;
 }
 
