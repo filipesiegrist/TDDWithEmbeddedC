@@ -24,6 +24,7 @@ static float Float_Output_Item_4;
 
 //! Helper function prototypes
 static CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void);
+static CIRCULARBUFFER_TYPE* GetEmptyBufferWithCustomCapacity(uint16_t capacity);
 static CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void);
 static void FillBufferWithFloats(
     CIRCULARBUFFER_TYPE* buf,
@@ -504,12 +505,32 @@ void test_GivenBufferWithCertainSize_WhenAllItemsQueued_ThenIsFull(void)
     );
 }
 
+void test_GivenBufferWithSize2_When2ItemsQueued_ThenIsFull(void)
+{
+    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(2);
+    FillBufferWithFloats(
+        Simple_Float_Buffer,
+        2, 
+        1.0f
+    );
+    TEST_ASSERT_TRUE(
+        CircularBuffer_IsFull(Simple_Float_Buffer)
+    );
+
+}
+
 
 //! Helper functions
 
 static CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void) {
     CIRCULARBUFFER_TYPE* buf;
     buf = CircularBuffer_Create(sizeof(float), CIRCULARBUFFER_NORMAL_CAPACITY);
+    return buf;
+}
+
+static CIRCULARBUFFER_TYPE* GetEmptyBufferWithCustomCapacity(uint16_t capacity) {
+    CIRCULARBUFFER_TYPE* buf;
+    buf = CircularBuffer_Create(sizeof(float), capacity);
     return buf;
 }
 
