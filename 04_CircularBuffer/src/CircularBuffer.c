@@ -11,7 +11,7 @@ static CIRCULARBUTTER_ITEM_TYPE* GetTail(const CIRCULARBUFFER_TYPE* buffer);
 
 //! Public implementations
 
-CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t buffer_size) {
+CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) {
     CIRCULARBUFFER_TYPE* new_buffer;
     new_buffer = Memory_Allocate(sizeof(CIRCULARBUFFER_TYPE));
 
@@ -39,7 +39,7 @@ uint16_t CircularBuffer_GetSize(const CIRCULARBUFFER_TYPE* buffer) {
 bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
     if (item == NULL) return false;
     if (IsEmpty(buffer)) return false;
-    
+
     memcpy(item, GetTail(buffer), GetItemSize(buffer));
 
     buffer->Tail++;
