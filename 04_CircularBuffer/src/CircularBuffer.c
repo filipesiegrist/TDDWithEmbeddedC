@@ -4,6 +4,7 @@
 
 #include <string.h>
 
+static bool IsFull(const CIRCULARBUFFER_TYPE* buffer);
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer);
 static CIRCULARBUTTER_ITEM_TYPE* GetHead(const CIRCULARBUFFER_TYPE* buffer);
@@ -49,6 +50,7 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 }
 
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
+    bool result;
     memcpy(GetHead(buffer), item, GetItemSize(buffer));
     buffer->Size++;
     buffer->Head++;
@@ -63,6 +65,10 @@ static CIRCULARBUTTER_ITEM_TYPE* GetHead(const CIRCULARBUFFER_TYPE* buffer) {
 
 static CIRCULARBUTTER_ITEM_TYPE* GetTail(const CIRCULARBUFFER_TYPE* buffer) {
     return &(buffer->Buffer_Ptr[buffer->Tail]);
+}
+
+static bool IsFull(const CIRCULARBUFFER_TYPE* buffer) {
+    return (buffer->Size) >= buffer->Capacity;
 }
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
