@@ -50,14 +50,12 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 }
 
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
-    bool result;
-
-    result = (IsFull(buffer))? false : true; 
+    if (IsFull(buffer)) return false; 
     
     memcpy(GetHead(buffer), item, GetItemSize(buffer));
     buffer->Size++;
     buffer->Head++;
-    return result;
+    return true;
 }
 
 //! Private implementations
