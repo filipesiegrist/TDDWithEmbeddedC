@@ -18,6 +18,7 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
     new_buffer->Head = 0;
     new_buffer->Tail = 0;
     new_buffer->Size = 0;
+    new_buffer->Capacity = capacity;
     new_buffer->Buffer_Ptr =
         Memory_Allocate(type_size*CIRCULARBUFFER_CAPACITY);
     
@@ -29,7 +30,7 @@ bool CircularBuffer_IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
 }
 
 bool CircularBuffer_IsFull(const CIRCULARBUFFER_TYPE* buffer) {
-    return (buffer->Size) >= CIRCULARBUFFER_CAPACITY;
+    return (buffer->Size) >= buffer->Capacity;
 }
 
 uint16_t CircularBuffer_GetSize(const CIRCULARBUFFER_TYPE* buffer) {
