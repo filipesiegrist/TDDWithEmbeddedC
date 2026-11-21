@@ -523,9 +523,7 @@ void test_GivenBufferWithSize2_When2ItemsQueued_ThenIsFull(void)
 //! Helper functions
 
 static CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void) {
-    CIRCULARBUFFER_TYPE* buf;
-    buf = CircularBuffer_Create(sizeof(float), CIRCULARBUFFER_NORMAL_CAPACITY);
-    return buf;
+    return GetEmptyBufferWithCustomCapacity(CIRCULARBUFFER_NORMAL_CAPACITY);
 }
 
 static CIRCULARBUFFER_TYPE* GetEmptyBufferWithCustomCapacity(uint16_t capacity) {
