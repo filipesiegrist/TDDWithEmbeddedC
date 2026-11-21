@@ -598,6 +598,22 @@ void test_GivenFullBuffer_WhenQueue_ThenSizeDoesNotIncrease(void)
     );
 }
 
+void test_GivenEmptyBuffer_WhenDequeue_ThenSizeRemainsZero(void)
+{
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+    Float_Output_Item = 0.0f;
+
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &Float_Output_Item
+    );
+
+    TEST_ASSERT_EQUAL_UINT16(
+        0,
+        CircularBuffer_GetSize(Simple_Float_Buffer)
+    );
+}
+
 
 //! Helper functions
 
