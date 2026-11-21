@@ -44,7 +44,7 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 
     memcpy(item, GetTail(buffer), GetItemSize(buffer));
 
-    buffer->Tail++;
+    buffer->Tail = (buffer->Tail + 1) % buffer->Capacity;
     buffer->Size--;
     return true;
 }
