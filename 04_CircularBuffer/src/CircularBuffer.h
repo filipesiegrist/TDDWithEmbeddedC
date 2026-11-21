@@ -13,8 +13,6 @@ typedef struct {
     uint16_t Capacity;
 } CIRCULARBUFFER_TYPE;
 
-#define CIRCULARBUFFER_CAPACITY 50
-
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity);
 
