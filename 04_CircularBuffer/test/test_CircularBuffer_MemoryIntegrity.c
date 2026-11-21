@@ -96,3 +96,25 @@ void test_GivenCapacity2_WhenWrappingAroundOnQueue_ThenWrapsHeadAndDoesNotOverfl
     TEST_ASSERT_EQUAL_FLOAT(20.0f, Fake_Data_Array[1]);
     TEST_ASSERT_EQUAL_FLOAT(0.0f, Fake_Data_Array[2]);
 }
+
+void test_GivenCapacity2_WhenWrappingAroundOnDequeue_ThenReadsFromWrappedIndexAndDoesNotReadOutOfBounds(void)
+{
+    float in_1 = 10.0f;
+    float in_2 = 20.0f;
+    float in_3 = 30.0f;
+    float out_1 = 0.0f;
+    float out_2 = 0.0f;
+    float out_3 = 0.0f;
+
+    CIRCULARBUFFER_TYPE* buf = CircularBuffer_Create(sizeof(float), 2);
+
+    (void) CircularBuffer_Queue(buf, &in_1);
+    (void) CircularBuffer_Queue(buf, &in_2);
+    (void) CircularBuffer_Dequeue(buf, &out_1);
+    (void) CircularBuffer_Dequeue(buf, &out_2);
+
+    (void) CircularBuffer_Queue(buf, &in_3);
+    (void) CircularBuffer_Dequeue(buf, &out_3);
+
+    TEST_ASSERT_EQUAL_FLOAT(30.0f, out_3);
+}
