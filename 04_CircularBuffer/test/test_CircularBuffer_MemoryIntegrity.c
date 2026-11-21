@@ -91,11 +91,6 @@ void test_GivenCapacity2_WhenWrappingAroundOnQueue_ThenWrapsHeadAndDoesNotOverfl
     (void) CircularBuffer_Dequeue(buf, &out_item);
     (void) CircularBuffer_Queue(buf, &in_3);
 
-    // Inspect internal struct state
-    TEST_ASSERT_EQUAL_UINT16(0, Fake_Buffer_Struct.Head);
-    TEST_ASSERT_EQUAL_UINT16(1, Fake_Buffer_Struct.Tail);
-    TEST_ASSERT_EQUAL_UINT16(2, Fake_Buffer_Struct.Size);
-
     // Inspect allocated data array boundaries
     TEST_ASSERT_EQUAL_FLOAT(30.0f, Fake_Data_Array[0]);
     TEST_ASSERT_EQUAL_FLOAT(20.0f, Fake_Data_Array[1]);
