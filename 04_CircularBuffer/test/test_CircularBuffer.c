@@ -516,7 +516,19 @@ void test_GivenBufferWithSize2_When2ItemsQueued_ThenIsFull(void)
     TEST_ASSERT_TRUE(
         CircularBuffer_IsFull(Simple_Float_Buffer)
     );
+}
 
+void test_GivenBufferWithSize60_When60ItemsQueued_ThenIsFull(void)
+{
+    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(60);
+    FillBufferWithFloats(
+        Simple_Float_Buffer,
+        60, 
+        1.0f
+    );
+    TEST_ASSERT_TRUE(
+        CircularBuffer_IsFull(Simple_Float_Buffer)
+    );
 }
 
 
