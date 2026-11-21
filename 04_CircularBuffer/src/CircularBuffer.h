@@ -15,7 +15,7 @@ typedef struct {
 #define CIRCULARBUFFER_CAPACITY 50
 
 
-CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size);
+CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t buffer_size);
 
 bool CircularBuffer_IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 bool CircularBuffer_IsFull(const CIRCULARBUFFER_TYPE* buffer);
