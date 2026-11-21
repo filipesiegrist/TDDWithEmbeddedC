@@ -23,8 +23,13 @@ static float Float_Output_Item_3;
 static float Float_Output_Item_4;
 
 //! Helper function prototypes
-CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void);
-CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void);
+static CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void);
+static CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void);
+static void FillBufferWithFloats(
+    CIRCULARBUFFER_TYPE* buf,
+    uint16_t count,
+    float start_value
+);
 
 //! Helper defines
 #define CIRCULARBUFFER_NORMAL_CAPACITY 50
@@ -486,16 +491,29 @@ void test_GivenTwoBuffers_WhenInterleavingQueuesAndDequeues_ThenMaintainIndepend
     TEST_ASSERT_EQUAL_FLOAT(Float_Input_Item_3, Float_Output_Item_2);
 }
 
+void test_GivenBufferWithCertainSize_WhenAllItemsQueued_ThenIsFull(void)
+{
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+    FillBufferWithFloats(
+        Simple_Float_Buffer,
+        CIRCULARBUFFER_NORMAL_CAPACITY, 
+        1.0f
+    );
+    TEST_ASSERT_TRUE(
+        CircularBuffer_IsFull(Simple_Float_Buffer)
+    );
+}
+
 
 //! Helper functions
 
-CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void) {
+static CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void) {
     CIRCULARBUFFER_TYPE* buf;
     buf = CircularBuffer_Create(sizeof(float), CIRCULARBUFFER_NORMAL_CAPACITY);
     return buf;
 }
 
-CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void) {
+static CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void) {
     CIRCULARBUFFER_TYPE* buf;
     float input_item;
 
@@ -506,6 +524,18 @@ CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void) {
         (void*) &input_item
     );
     return buf;
+}
+
+static void FillBufferWithFloats(
+    CIRCULARBUFFER_TYPE* buf,
+    uint16_t count,
+    float start_value
+) {
+    float val = start_value;
+    for (uint16_t i = 0; i < count; i++) {
+        (void) CircularBuffer_Queue(buf, (void*) &val);
+        val += 1.0f;
+    }
 }
 
 #endif // TEST
