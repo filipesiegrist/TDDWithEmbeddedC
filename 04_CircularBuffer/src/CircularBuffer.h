@@ -15,6 +15,7 @@ typedef struct {
 
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity);
+void CircularBuffer_Destroy(CIRCULARBUFFER_TYPE** buffer_ptr);
 
 bool CircularBuffer_IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 bool CircularBuffer_IsFull(const CIRCULARBUFFER_TYPE* buffer);

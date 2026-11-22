@@ -26,6 +26,10 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
     return new_buffer;
 }
 
+void CircularBuffer_Destroy(CIRCULARBUFFER_TYPE** buffer_ptr) {
+
+}
+
 bool CircularBuffer_IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
     return IsEmpty(buffer);
 }
