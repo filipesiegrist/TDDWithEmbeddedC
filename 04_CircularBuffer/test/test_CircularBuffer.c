@@ -614,6 +614,30 @@ void test_GivenEmptyBuffer_WhenDequeue_ThenSizeRemainsZero(void)
     );
 }
 
+void test_GivenCreatedBuffer_WhenDestroyIsCalled_ThenSetsPointerToNull(void)
+{
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+
+    CircularBuffer_Destroy(&Simple_Float_Buffer);
+
+    TEST_ASSERT_NULL(Simple_Float_Buffer);
+}
+
+// void test_GivenPointerToNull_WhenDestroyIsCalled_ThenRemainsNull(void)
+// {
+//     Simple_Float_Buffer = NULL;
+
+//     CircularBuffer_Destroy(&Simple_Float_Buffer);
+
+//     TEST_ASSERT_NULL(Simple_Float_Buffer);
+// }
+
+// void test_WhenDestroyIsCalledWithNullAddress_ThenDoesNotCrash(void)
+// {
+//     //! Guard rail against passing NULL instead of &buffer_ptr
+//     CircularBuffer_Destroy(NULL);
+// }
+
 
 //! Helper functions
 
