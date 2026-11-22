@@ -41,3 +41,20 @@ void test_WhenStructAllocationFails_ThenReturnsNullWithoutLeaking(void)
 
     TEST_ASSERT_NULL(buf);
 }
+
+void test_WhenDataArrayAllocationFails_ThenFreesStructAndReturnsNull(void)
+{
+    CIRCULARBUFFER_TYPE fake_struct;
+    CIRCULARBUFFER_TYPE* buf;
+
+    Memory_Allocate_ExpectAndReturn(sizeof(CIRCULARBUFFER_TYPE), &fake_struct);
+    Memory_Allocate_ExpectAndReturn(SMALL_BUFFER_CAPACITY * sizeof(float), NULL);
+    Memory_Deallocate_Expect(&fake_struct);
+
+    buf = CircularBuffer_Create(
+        sizeof(float),
+        SMALL_BUFFER_CAPACITY
+    );
+
+    TEST_ASSERT_NULL(buf);
+}
