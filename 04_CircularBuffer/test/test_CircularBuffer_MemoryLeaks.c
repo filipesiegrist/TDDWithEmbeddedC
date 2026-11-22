@@ -72,3 +72,14 @@ void test_GivenZeroTypeSize_WhenCreate_ThenReturnNull(void)
         CircularBuffer_Create(0, SMALL_BUFFER_CAPACITY)
     );
 }
+
+void test_WhenAllocationSizeOverflowsSizeT_ThenReturnsNullWithoutAllocating(void)
+{
+    size_t overflowing_type_size = (SIZE_MAX / SMALL_BUFFER_CAPACITY) + 1;
+    CIRCULARBUFFER_TYPE* buf;
+
+    // Nenhuma expectativa de Memory_Allocate: se tentar alocar, o CMock falha o teste
+    buf = CircularBuffer_Create(overflowing_type_size, SMALL_BUFFER_CAPACITY);
+
+    TEST_ASSERT_NULL(buf);
+}
