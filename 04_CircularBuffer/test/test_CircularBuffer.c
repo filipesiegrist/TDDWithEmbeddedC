@@ -24,6 +24,7 @@ static float Float_Output_Item_4;
 
 //! Helper function prototypes
 static CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void);
+static CIRCULARBUFFER_TYPE* GetSimpleFullBuffer(void);
 static CIRCULARBUFFER_TYPE* GetEmptyBufferWithCustomCapacity(uint16_t capacity);
 static CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void);
 static void FillBufferWithFloats(
@@ -508,13 +509,7 @@ void test_GivenBufferWithCertainSize_WhenAllItemsQueued_ThenIsFull(void)
 
 void test_GivenBufferWithSize2_When2ItemsQueued_ThenIsFull(void)
 {
-    Simple_Float_Buffer =
-        GetEmptyBufferWithCustomCapacity(SMALL_BUFFER_CAPACITY);
-    FillBufferWithFloats(
-        Simple_Float_Buffer,
-        SMALL_BUFFER_CAPACITY, 
-        1.0f
-    );
+    Simple_Float_Buffer = GetSimpleFullBuffer();
     TEST_ASSERT_TRUE(
         CircularBuffer_IsFull(Simple_Float_Buffer)
     );
@@ -592,14 +587,7 @@ void test_GivenFullBuffer_WhenQueueAndDequeue_ThenDontRetrieveInvalidItem(void)
 
 void test_GivenFullBuffer_WhenQueue_ThenSizeDoesNotIncrease(void)
 {
-    Simple_Float_Buffer =
-        GetEmptyBufferWithCustomCapacity(SMALL_BUFFER_CAPACITY);
-    FillBufferWithFloats(
-        Simple_Float_Buffer, 
-        SMALL_BUFFER_CAPACITY, 
-        1.0f
-    );
-    Float_Input_Item = 99.0f;
+    Simple_Float_Buffer = GetSimpleFullBuffer();
 
     (void) CircularBuffer_Queue(
         Simple_Float_Buffer,
@@ -609,6 +597,19 @@ void test_GivenFullBuffer_WhenQueue_ThenSizeDoesNotIncrease(void)
     TEST_ASSERT_EQUAL_UINT16(
         SMALL_BUFFER_CAPACITY,
         CircularBuffer_GetSize(Simple_Float_Buffer)
+    );
+}
+
+void test_GivenFullBuffer_WhenDequeue_ThenItsNotFull(void)
+{
+    Simple_Float_Buffer = GetSimpleFullBuffer();
+
+    (void) CircularBuffer_Dequeue(
+        Simple_Float_Buffer,
+        (void*) &Float_Output_Item
+    );
+    TEST_ASSERT_FALSE(
+        CircularBuffer_IsFull(Simple_Float_Buffer)
     );
 }
 
