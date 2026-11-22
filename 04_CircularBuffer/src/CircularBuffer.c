@@ -29,7 +29,7 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
     if (new_buffer->Buffer_Ptr == NULL)
     {
         Memory_Deallocate(new_buffer);
-        return NULL;
+        new_buffer = NULL;
     }
 
     return new_buffer;
