@@ -58,3 +58,17 @@ void test_WhenDataArrayAllocationFails_ThenFreesStructAndReturnsNull(void)
 
     TEST_ASSERT_NULL(buf);
 }
+
+void test_GivenZeroCapacity_WhenCreate_ThenReturnNull(void)
+{
+    TEST_ASSERT_NULL(
+        CircularBuffer_Create(sizeof(float), 0)
+    );
+}
+
+void test_GivenZeroTypeSize_WhenCreate_ThenReturnNull(void)
+{
+    TEST_ASSERT_NULL(
+        CircularBuffer_Create(0, SMALL_BUFFER_CAPACITY)
+    );
+}

@@ -653,13 +653,6 @@ void test_WhenDestroyIsCalledWithNullAddress_ThenDoesNotCrash(void)
 
 //! Creation boundary & zero-size checks
 
-void test_GivenZeroCapacity_WhenCreate_ThenReturnNull(void)
-{
-    TEST_ASSERT_NULL(
-        CircularBuffer_Create(sizeof(float), 0)
-    );
-}
-
 void test_GivenZeroTypeSize_WhenCreate_ThenReturnNull(void)
 {
     TEST_ASSERT_NULL(
