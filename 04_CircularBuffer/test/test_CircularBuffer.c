@@ -630,11 +630,11 @@ void test_GivenPointerToNull_WhenDestroyIsCalled_ThenRemainsNull(void)
     TEST_ASSERT_NULL(Simple_Float_Buffer);
 }
 
-// void test_WhenDestroyIsCalledWithNullAddress_ThenDoesNotCrash(void)
-// {
-//     //! Guard rail against passing NULL instead of &buffer_ptr
-//     CircularBuffer_Destroy(NULL);
-// }
+void test_WhenDestroyIsCalledWithNullAddress_ThenDoesNotCrash(void)
+{
+    //! Guard rail against passing NULL instead of &buffer_ptr
+    CircularBuffer_Destroy(NULL);
+}
 
 
 //! Helper functions
