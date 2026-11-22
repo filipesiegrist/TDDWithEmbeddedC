@@ -128,7 +128,7 @@ Operations receiving invalid or uninitialized buffer instances must immediately 
 - [X] Destroy (simple)
 - [X] Destroy do actually work
 - [X] Check for NULL at the Internal Array Structure
-- [ ] Memory limits/overflow at size allocation
+- [X] Memory limits/overflow at size allocation
 - [ ] Multiple Types
 - [ ] Memory Integrity throughout Buffer stress test
 - [X] Prevent adding item to a full buffer
