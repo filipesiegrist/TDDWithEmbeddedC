@@ -98,6 +98,7 @@ static CIRCULARBUTTER_ITEM_TYPE* GetTailPosition(const CIRCULARBUFFER_TYPE* buff
 }
 
 static bool IsFull(const CIRCULARBUFFER_TYPE* buffer) {
+    if (buffer == NULL) return false;
     return (buffer->Size) >= buffer->Capacity;
 }
 
