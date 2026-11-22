@@ -102,6 +102,7 @@ static bool IsFull(const CIRCULARBUFFER_TYPE* buffer) {
 }
 
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
+    if (buffer == NULL) return true;
     return (buffer->Size == 0);
 }
 
