@@ -105,13 +105,13 @@ Operations receiving invalid or uninitialized buffer instances must immediately 
 - [ ] **Continuous Wrap-Around cycles**: Verify that the buffer operates correctly after multiple full cycles of wrapping around capacity limits for various element sizes.
 
 ### I - Interfaces
-- [ ] **Create lifecycle with element size**: Verify that `Create` initializes all internal variables, pointers, capacity, and `element_size` settings correctly.
-- [ ] **Destroy lifecycle**: Verify that `Destroy` cleans up allocated memory blocks properly without memory leaks.
+- [X] **Create lifecycle with element size**: Verify that `Create` initializes all internal variables, pointers, capacity, and `element_size` settings correctly.
+- [X] **Destroy lifecycle**: Verify that `Destroy` cleans up allocated memory blocks properly without memory leaks.
 - [ ] **Clear operation**: Verify that calling `Clear` on a buffer containing generic items resets `GetCount` to 0, sets `IsEmpty` to true, and sets `IsFull` to false.
 - [ ] **GetCapacity and GetElementSize queries**: Verify that `GetCapacity` and `GetElementSize` return the configured values throughout the buffer lifecycle.
 
 ### E - Exceptions
-- [ ] **Null instance safety**: Verify that passing a `NULL` buffer pointer to any function (`Put`, `Get`, `IsEmpty`, `IsFull`, `GetCount`, `Clear`, `Destroy`) is handled gracefully without causing segmentation faults.
+- [X] **Null instance safety**: Verify that passing a `NULL` buffer pointer to any function (`Put`, `Get`, `IsEmpty`, `IsFull`, `GetCount`, `Clear`, `Destroy`) is handled gracefully without causing segmentation faults.
 - [X] **Null output pointer on Get**: Verify that calling `Get` with a valid buffer but a `NULL` destination pointer (`void* item`) fails safely without attempting a `memcpy`.
 - [X] **Null input pointer on Put**: Verify that calling `Put` with a `NULL` source data pointer (`const void* item`) fails safely without attempting a `memcpy`.
 - [X] **Zero capacity or zero element size creation**: Verify that attempting to create a buffer with capacity 0 or element size 0 fails safely and returns `NULL`.
@@ -127,7 +127,8 @@ Operations receiving invalid or uninitialized buffer instances must immediately 
 - [X] Custom Capacities
 - [X] Destroy (simple)
 - [X] Destroy do actually work
-- [X] Check for NULL at the Internal Array Structure 
-- [ ] Memory Integrity throughout Buffer stress test
+- [X] Check for NULL at the Internal Array Structure
+- [ ] Memory limits/overflow at size allocation
 - [ ] Multiple Types
+- [ ] Memory Integrity throughout Buffer stress test
 - [X] Prevent adding item to a full buffer
