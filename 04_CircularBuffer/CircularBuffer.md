@@ -127,6 +127,7 @@ Operations receiving invalid or uninitialized buffer instances must immediately 
 - [X] Custom Capacities
 - [X] Destroy (simple)
 - [ ] Destroy do actually work
+- [ ] Check for NULL at the Internal Array Structure 
 - [ ] Memory Integrity throughout Buffer stress test
 - [ ] Multiple Types
 - [X] Prevent adding item to a full buffer
