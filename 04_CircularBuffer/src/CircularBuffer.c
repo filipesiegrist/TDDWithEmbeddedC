@@ -16,6 +16,9 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
     CIRCULARBUFFER_TYPE* new_buffer;
     new_buffer = Memory_Allocate(sizeof(CIRCULARBUFFER_TYPE));
 
+    //! Pre Condition: Could correcty allocate space for the Type
+    if (new_buffer == NULL) return NULL;
+
     new_buffer->Head = 0;
     new_buffer->Tail = 0;
     new_buffer->Size = 0;
