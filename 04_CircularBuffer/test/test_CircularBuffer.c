@@ -679,7 +679,13 @@ void test_GivenNullBuffer_WhenGetSize_ThenReturnZero(void)
 
 void test_GivenNullBuffer_WhenQueue_ThenReturnFalse(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    Float_Input_Item = 67.0f;
+    TEST_ASSERT_FALSE(
+        CircularBuffer_Queue(
+            NULL,
+            &Float_Input_Item
+        )
+    );
 }
 
 void test_GivenValidBuffer_WhenQueueWithNullItem_ThenReturnFalse(void)
