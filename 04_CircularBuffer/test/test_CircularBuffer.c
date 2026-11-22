@@ -690,7 +690,15 @@ void test_GivenNullBuffer_WhenQueue_ThenReturnFalse(void)
 
 void test_GivenValidBuffer_WhenQueueWithNullItem_ThenReturnFalse(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    CIRCULARBUFFER_TYPE* buf;
+
+    buf = GetSimpleEmptyBuffer();
+    TEST_ASSERT_FALSE(
+        CircularBuffer_Queue(
+            buf,
+            NULL
+        )
+    );
 }
 
 void test_GivenNullBuffer_WhenDequeue_ThenReturnFalse(void)
