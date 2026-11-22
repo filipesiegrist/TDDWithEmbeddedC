@@ -623,14 +623,12 @@ void test_GivenCreatedBuffer_WhenDestroyIsCalled_ThenSetsPointerToNull(void)
     TEST_ASSERT_NULL(Simple_Float_Buffer);
 }
 
-// void test_GivenPointerToNull_WhenDestroyIsCalled_ThenRemainsNull(void)
-// {
-//     Simple_Float_Buffer = NULL;
-
-//     CircularBuffer_Destroy(&Simple_Float_Buffer);
-
-//     TEST_ASSERT_NULL(Simple_Float_Buffer);
-// }
+void test_GivenPointerToNull_WhenDestroyIsCalled_ThenRemainsNull(void)
+{
+    Simple_Float_Buffer = NULL;
+    CircularBuffer_Destroy(&Simple_Float_Buffer);
+    TEST_ASSERT_NULL(Simple_Float_Buffer);
+}
 
 // void test_WhenDestroyIsCalledWithNullAddress_ThenDoesNotCrash(void)
 // {
