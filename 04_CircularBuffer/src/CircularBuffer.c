@@ -82,9 +82,12 @@ bool CircularBuffer_Dequeue(CIRCULARBUFFER_TYPE* buffer, void* item) {
 bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
     //! Pre Condition: valid buffer
     if (buffer == NULL) return false;
-    
+
     //! Pre Condition: Not full
-    if (IsFull(buffer)) return false; 
+    if (IsFull(buffer)) return false;
+    
+    //! Pre Condition: valid item
+    if (item == NULL) return false;
     
     memcpy(GetHeadPosition(buffer), item, GetItemSize(buffer));
     buffer->Size++;
