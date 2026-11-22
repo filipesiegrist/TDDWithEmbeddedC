@@ -13,7 +13,7 @@ void tearDown(void)
 {
 }
 
-void test_GivenCreatedBuffer_WhenDestroyIsCalled_ThenFreesInternalDataArrayMemory(void)
+void test_GivenCreatedBuffer_WhenDestroyIsCalled_ThenFreesInternalArrayAndStructInOrder(void)
 {
     CIRCULARBUFFER_TYPE fake_struct;
     float fake_data[SMALL_BUFFER_CAPACITY];
@@ -33,6 +33,11 @@ void test_GivenCreatedBuffer_WhenDestroyIsCalled_ThenFreesInternalDataArrayMemor
     CircularBuffer_Destroy(&buf);
 }
 
-void test_GivenCreatedBuffer_WhenDestroyIsCalled_ThenFreesBufferStructMemory(void)
+void test_WhenStructAllocationFails_ThenReturnsNullWithoutLeaking(void)
 {
+    Memory_Allocate_ExpectAndReturn(sizeof(CIRCULARBUFFER_TYPE), NULL);
+
+    CIRCULARBUFFER_TYPE* buf = CircularBuffer_Create(sizeof(float), SMALL_BUFFER_CAPACITY);
+
+    TEST_ASSERT_NULL(buf);
 }
