@@ -27,8 +27,15 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
 }
 
 void CircularBuffer_Destroy(CIRCULARBUFFER_TYPE** buffer_ptr) {
-    //! Pre Condition: Having a address with the buffer pointer
+    //! Pre Condition: Having an address with the buffer pointer
     if (buffer_ptr == NULL) return;
+
+    //! Pre Condition: Having a non-null buffer
+    if (*buffer_ptr == NULL) return;
+
+    Memory_Deallocate((*buffer_ptr)->Buffer_Ptr);
+    Memory_Deallocate(*buffer_ptr);
+
     *buffer_ptr = NULL;
 }
 
