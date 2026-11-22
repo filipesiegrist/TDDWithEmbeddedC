@@ -34,6 +34,7 @@ static void FillBufferWithFloats(
 
 //! Helper defines
 #define CIRCULARBUFFER_NORMAL_CAPACITY 50
+#define SMALL_BUFFER_CAPACITY   2
 
 
 void setUp(void)
@@ -507,10 +508,11 @@ void test_GivenBufferWithCertainSize_WhenAllItemsQueued_ThenIsFull(void)
 
 void test_GivenBufferWithSize2_When2ItemsQueued_ThenIsFull(void)
 {
-    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(2);
+    Simple_Float_Buffer =
+        GetEmptyBufferWithCustomCapacity(SMALL_BUFFER_CAPACITY);
     FillBufferWithFloats(
         Simple_Float_Buffer,
-        2, 
+        SMALL_BUFFER_CAPACITY, 
         1.0f
     );
     TEST_ASSERT_TRUE(
@@ -533,8 +535,13 @@ void test_GivenBufferWithSize60_When60ItemsQueued_ThenIsFull(void)
 
 void test_GivenFullBuffer_WhenQueue_ThenReturnFalse(void)
 {
-    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(2);
-    FillBufferWithFloats(Simple_Float_Buffer, 2, 1.0f);
+    Simple_Float_Buffer =
+        GetEmptyBufferWithCustomCapacity(SMALL_BUFFER_CAPACITY);
+    FillBufferWithFloats(
+        Simple_Float_Buffer,
+        SMALL_BUFFER_CAPACITY,
+        1.0f
+    );
     Float_Input_Item = 99.0f;
 
     TEST_ASSERT_FALSE(
@@ -547,7 +554,8 @@ void test_GivenFullBuffer_WhenQueue_ThenReturnFalse(void)
 
 void test_GivenFullBuffer_WhenQueueAndDequeue_ThenRetrieveLastValidItem(void)
 {
-    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(2);
+    Simple_Float_Buffer =
+        GetEmptyBufferWithCustomCapacity(SMALL_BUFFER_CAPACITY);
     Float_Input_Item_1 = 10.0f;
     Float_Input_Item_2 = 20.0f;
     Float_Input_Item_3 = 99.0f;
@@ -565,11 +573,11 @@ void test_GivenFullBuffer_WhenQueueAndDequeue_ThenRetrieveLastValidItem(void)
 
 void test_GivenFullBuffer_WhenQueueAndDequeue_ThenDontRetrieveInvalidItem(void)
 {
-    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(2);
+    Simple_Float_Buffer =
+        GetEmptyBufferWithCustomCapacity(SMALL_BUFFER_CAPACITY);
     Float_Input_Item_1 = 10.0f;
     Float_Input_Item_2 = 20.0f;
     Float_Input_Item_3 = 99.0f;
-    Float_Output_Item_3 = -1.0f;
 
     (void) CircularBuffer_Queue(Simple_Float_Buffer, (void*) &Float_Input_Item_1);
     (void) CircularBuffer_Queue(Simple_Float_Buffer, (void*) &Float_Input_Item_2);
@@ -578,13 +586,19 @@ void test_GivenFullBuffer_WhenQueueAndDequeue_ThenDontRetrieveInvalidItem(void)
     (void) CircularBuffer_Dequeue(Simple_Float_Buffer, (void*) &Float_Output_Item_1);
     (void) CircularBuffer_Dequeue(Simple_Float_Buffer, (void*) &Float_Output_Item_2);
 
-    TEST_ASSERT_EQUAL_FLOAT(20.0f, Float_Output_Item_2);
+    TEST_ASSERT_EQUAL_FLOAT(Float_Input_Item_2, Float_Output_Item_2);
+    TEST_ASSERT_NOT_EQUAL_FLOAT(Float_Input_Item_3, Float_Output_Item_2);
 }
 
 void test_GivenFullBuffer_WhenQueue_ThenSizeDoesNotIncrease(void)
 {
-    Simple_Float_Buffer = GetEmptyBufferWithCustomCapacity(2);
-    FillBufferWithFloats(Simple_Float_Buffer, 2, 1.0f);
+    Simple_Float_Buffer =
+        GetEmptyBufferWithCustomCapacity(SMALL_BUFFER_CAPACITY);
+    FillBufferWithFloats(
+        Simple_Float_Buffer, 
+        SMALL_BUFFER_CAPACITY, 
+        1.0f
+    );
     Float_Input_Item = 99.0f;
 
     (void) CircularBuffer_Queue(
@@ -593,7 +607,7 @@ void test_GivenFullBuffer_WhenQueue_ThenSizeDoesNotIncrease(void)
     );
 
     TEST_ASSERT_EQUAL_UINT16(
-        2,
+        SMALL_BUFFER_CAPACITY,
         CircularBuffer_GetSize(Simple_Float_Buffer)
     );
 }
@@ -652,12 +666,24 @@ static CIRCULARBUFFER_TYPE* GetEmptyBufferWithCustomCapacity(uint16_t capacity) 
 static CIRCULARBUFFER_TYPE* GetSingleItemBuffer(void) {
     CIRCULARBUFFER_TYPE* buf;
     float input_item;
-
+    
     buf = GetSimpleEmptyBuffer();
     input_item = 33.3;
     (void) CircularBuffer_Queue(
         buf,
         (void*) &input_item
+    );
+    return buf;
+}
+
+static CIRCULARBUFFER_TYPE* GetSimpleFullBuffer(void) {
+    CIRCULARBUFFER_TYPE* buf;
+
+    buf = GetEmptyBufferWithCustomCapacity(SMALL_BUFFER_CAPACITY);
+    FillBufferWithFloats(
+        buf, 
+        SMALL_BUFFER_CAPACITY, 
+        1.0f
     );
     return buf;
 }
