@@ -64,6 +64,7 @@ bool CircularBuffer_IsFull(const CIRCULARBUFFER_TYPE* buffer) {
 }
 
 uint16_t CircularBuffer_GetSize(const CIRCULARBUFFER_TYPE* buffer) {
+    if (buffer == NULL) return 0;
     return buffer->Size;
 }
 
