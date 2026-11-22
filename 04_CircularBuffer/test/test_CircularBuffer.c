@@ -662,9 +662,11 @@ void test_GivenNullBuffer_WhenIsEmpty_ThenReturnTrue(void)
     );
 }
 
-void test_GivenNullBuffer_WhenIsFull_ThenReturnTrue(void)
+void test_GivenNullBuffer_WhenIsFull_ThenReturnFalse(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    TEST_ASSERT_FALSE(
+        CircularBuffer_IsFull(NULL)
+    );
 }
 
 void test_GivenNullBuffer_WhenGetSize_ThenReturnZero(void)
