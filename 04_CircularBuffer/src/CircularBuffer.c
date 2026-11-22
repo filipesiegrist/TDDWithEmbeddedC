@@ -14,13 +14,17 @@ static CIRCULARBUTTER_ITEM_TYPE* GetTailPosition(const CIRCULARBUFFER_TYPE* buff
 
 CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) {
     CIRCULARBUFFER_TYPE* new_buffer;
+
+    //! Pre Condition: Having a positive capacity
+    if (capacity <= 0) return NULL;
+
+    //! Pre Condition: Having a valid type
+    if (type_size <= 0) return NULL;
+
     new_buffer = Memory_Allocate(sizeof(CIRCULARBUFFER_TYPE));
 
     //! Pre Condition: Could correcty allocate space for the Type
     if (new_buffer == NULL) return NULL;
-
-    //! Pre Condition: Having a positive capacity
-    if (capacity <= 0) return NULL;
 
     new_buffer->Head = 0;
     new_buffer->Tail = 0;
