@@ -703,7 +703,13 @@ void test_GivenValidBuffer_WhenQueueWithNullItem_ThenReturnFalse(void)
 
 void test_GivenNullBuffer_WhenDequeue_ThenReturnFalse(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    Float_Input_Item = 67.0f;
+    TEST_ASSERT_FALSE(
+        CircularBuffer_Dequeue(
+            NULL,
+            &Float_Input_Item
+        )
+    );
 }
 
 //! Helper functions
