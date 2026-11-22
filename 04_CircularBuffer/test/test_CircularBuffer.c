@@ -671,7 +671,10 @@ void test_GivenNullBuffer_WhenIsFull_ThenReturnFalse(void)
 
 void test_GivenNullBuffer_WhenGetSize_ThenReturnZero(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    TEST_ASSERT_EQUAL(
+        0,
+        CircularBuffer_GetSize(NULL)
+    );
 }
 
 void test_GivenNullBuffer_WhenQueue_ThenReturnFalse(void)
