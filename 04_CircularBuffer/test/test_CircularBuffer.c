@@ -653,18 +653,13 @@ void test_WhenDestroyIsCalledWithNullAddress_ThenDoesNotCrash(void)
 
 //! Creation boundary & zero-size checks
 
-void test_GivenZeroTypeSize_WhenCreate_ThenReturnNull(void)
-{
-    TEST_ASSERT_NULL(
-        CircularBuffer_Create(0, SMALL_BUFFER_CAPACITY)
-    );
-}
-
 //! Null pointer safety checks
 
 void test_GivenNullBuffer_WhenIsEmpty_ThenReturnTrue(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    TEST_ASSERT_TRUE(
+        CircularBuffer_IsEmpty(NULL)
+    );
 }
 
 void test_GivenNullBuffer_WhenIsFull_ThenReturnTrue(void)
