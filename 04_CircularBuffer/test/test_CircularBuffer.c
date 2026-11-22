@@ -662,7 +662,9 @@ void test_GivenZeroCapacity_WhenCreate_ThenReturnNull(void)
 
 void test_GivenZeroTypeSize_WhenCreate_ThenReturnNull(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    TEST_ASSERT_NULL(
+        CircularBuffer_Create(0, SMALL_BUFFER_CAPACITY)
+    );
 }
 
 //! Null pointer safety checks
