@@ -651,6 +651,51 @@ void test_WhenDestroyIsCalledWithNullAddress_ThenDoesNotCrash(void)
     CircularBuffer_Destroy(NULL);
 }
 
+//! Creation boundary & zero-size checks
+
+void test_GivenZeroCapacity_WhenCreate_ThenReturnNull(void)
+{
+    TEST_ASSERT_NULL(
+        CircularBuffer_Create(sizeof(float), 0)
+    );
+}
+
+void test_GivenZeroTypeSize_WhenCreate_ThenReturnNull(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
+
+//! Null pointer safety checks
+
+void test_GivenNullBuffer_WhenIsEmpty_ThenReturnTrue(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
+
+void test_GivenNullBuffer_WhenIsFull_ThenReturnTrue(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
+
+void test_GivenNullBuffer_WhenGetSize_ThenReturnZero(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
+
+void test_GivenNullBuffer_WhenQueue_ThenReturnFalse(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
+
+void test_GivenValidBuffer_WhenQueueWithNullItem_ThenReturnFalse(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
+
+void test_GivenNullBuffer_WhenDequeue_ThenReturnFalse(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
 
 //! Helper functions
 
