@@ -21,6 +21,9 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
     //! Pre Condition: Having a valid type
     if (type_size <= 0) return NULL;
 
+    //! Pre Condition: Allocated size not overflowing
+    if (type_size > (SIZE_MAX / capacity)) return NULL;
+
     new_buffer = Memory_Allocate(sizeof(CIRCULARBUFFER_TYPE));
 
     //! Pre Condition: Could correcty allocate space for the Type
