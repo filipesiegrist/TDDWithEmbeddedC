@@ -113,8 +113,8 @@ Operations receiving invalid or uninitialized buffer instances must immediately 
 ### E - Exceptions
 - [ ] **Null instance safety**: Verify that passing a `NULL` buffer pointer to any function (`Put`, `Get`, `IsEmpty`, `IsFull`, `GetCount`, `Clear`, `Destroy`) is handled gracefully without causing segmentation faults.
 - [X] **Null output pointer on Get**: Verify that calling `Get` with a valid buffer but a `NULL` destination pointer (`void* item`) fails safely without attempting a `memcpy`.
-- [ ] **Null input pointer on Put**: Verify that calling `Put` with a `NULL` source data pointer (`const void* item`) fails safely without attempting a `memcpy`.
-- [ ] **Zero capacity or zero element size creation**: Verify that attempting to create a buffer with capacity 0 or element size 0 fails safely and returns `NULL`.
+- [X] **Null input pointer on Put**: Verify that calling `Put` with a `NULL` source data pointer (`const void* item`) fails safely without attempting a `memcpy`.
+- [X] **Zero capacity or zero element size creation**: Verify that attempting to create a buffer with capacity 0 or element size 0 fails safely and returns `NULL`.
 
 ### S - Simple Behaviors & Refactoring
 - [X] **Hard-coded return passes**: Use hard-coded return values initially (e.g., `IsEmpty` always returning `true`) to validate Ceedling test harness setup.
