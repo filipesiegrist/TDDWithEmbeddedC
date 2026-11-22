@@ -6,7 +6,7 @@
 
 typedef float CIRCULARBUTTER_ITEM_TYPE;
 typedef struct {
-    CIRCULARBUTTER_ITEM_TYPE* Buffer_Ptr;
+    CIRCULARBUTTER_ITEM_TYPE* Storage_Ptr;
     uint16_t Size;
     uint16_t Head;
     uint16_t Tail;

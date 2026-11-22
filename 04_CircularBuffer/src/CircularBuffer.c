@@ -30,10 +30,10 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
     new_buffer->Tail = 0;
     new_buffer->Size = 0;
     new_buffer->Capacity = capacity;
-    new_buffer->Buffer_Ptr =
+    new_buffer->Storage_Ptr =
         Memory_Allocate(type_size*capacity);
     
-    if (new_buffer->Buffer_Ptr == NULL)
+    if (new_buffer->Storage_Ptr == NULL)
     {
         Memory_Deallocate(new_buffer);
         new_buffer = NULL;
@@ -49,7 +49,7 @@ void CircularBuffer_Destroy(CIRCULARBUFFER_TYPE** buffer_ptr) {
     //! Pre Condition: Having a non-null buffer
     if (*buffer_ptr == NULL) return;
 
-    Memory_Deallocate((*buffer_ptr)->Buffer_Ptr);
+    Memory_Deallocate((*buffer_ptr)->Storage_Ptr);
     Memory_Deallocate(*buffer_ptr);
 
     *buffer_ptr = NULL;
@@ -98,11 +98,11 @@ bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
 //! Private implementations
 
 static CIRCULARBUTTER_ITEM_TYPE* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer) {
-    return &(buffer->Buffer_Ptr[buffer->Head]);
+    return &(buffer->Storage_Ptr[buffer->Head]);
 }
 
 static CIRCULARBUTTER_ITEM_TYPE* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer) {
-    return &(buffer->Buffer_Ptr[buffer->Tail]);
+    return &(buffer->Storage_Ptr[buffer->Tail]);
 }
 
 static bool IsFull(const CIRCULARBUFFER_TYPE* buffer) {
