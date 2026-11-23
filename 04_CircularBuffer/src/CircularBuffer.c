@@ -32,6 +32,7 @@ CIRCULARBUFFER_TYPE* CircularBuffer_Create(size_t type_size, uint16_t capacity) 
     new_buffer->Head = 0;
     new_buffer->Tail = 0;
     new_buffer->Size = 0;
+    new_buffer->Type_Size = type_size;
     new_buffer->Capacity = capacity;
     new_buffer->Storage_Ptr =
         Memory_Allocate(type_size*capacity);
@@ -101,11 +102,11 @@ bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
 //! Private implementations
 
 static CIRCULARBUTTER_ITEM_TYPE* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer) {
-    return &(buffer->Storage_Ptr[buffer->Head]);
+    return buffer->Storage_Ptr+buffer->Head*buffer->Type_Size;
 }
 
 static CIRCULARBUTTER_ITEM_TYPE* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer) {
-    return &(buffer->Storage_Ptr[buffer->Tail]);
+    return buffer->Storage_Ptr+buffer->Tail*buffer->Type_Size;
 }
 
 static bool IsFull(const CIRCULARBUFFER_TYPE* buffer) {
@@ -119,5 +120,5 @@ static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer) {
 }
 
 static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer) {
-    return sizeof(CIRCULARBUTTER_ITEM_TYPE);
+    return buffer->Type_Size;
 }
