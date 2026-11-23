@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef float CIRCULARBUTTER_ITEM_TYPE;
 typedef struct {
     void* Storage_Ptr;
     uint16_t Size;
