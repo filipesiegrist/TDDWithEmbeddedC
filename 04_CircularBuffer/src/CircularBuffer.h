@@ -10,7 +10,7 @@ typedef struct {
     uint16_t Head;
     uint16_t Tail;
     uint16_t Capacity;
-    size_t Type_Size;
+    size_t Item_Size;
 } CIRCULARBUFFER_TYPE;
 
 
