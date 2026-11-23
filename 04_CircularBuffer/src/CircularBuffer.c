@@ -12,6 +12,7 @@ static void* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer);
 static void* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer);
 static void* GetBaseAddress(const CIRCULARBUFFER_TYPE* buffer);
 static size_t GetHeadOffset(const CIRCULARBUFFER_TYPE* buffer);
+static size_t GetTailOffset(const CIRCULARBUFFER_TYPE* buffer);
 
 //! Public implementations
 
@@ -109,11 +110,15 @@ static void* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer) {
 }
 
 static void* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer) {
-    return GetBaseAddress(buffer)+buffer->Tail*buffer->Item_Size;
+    return GetBaseAddress(buffer)+GetTailOffset(buffer);
 }
 
 static size_t GetHeadOffset(const CIRCULARBUFFER_TYPE* buffer) {
     return buffer->Head*buffer->Item_Size;
+}
+
+static size_t GetTailOffset(const CIRCULARBUFFER_TYPE* buffer) {
+    return buffer->Tail*buffer->Item_Size;
 }
 
 static void* GetBaseAddress(const CIRCULARBUFFER_TYPE* buffer) {
