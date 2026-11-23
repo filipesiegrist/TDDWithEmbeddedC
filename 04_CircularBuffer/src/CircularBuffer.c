@@ -8,7 +8,7 @@ static bool IsFull(const CIRCULARBUFFER_TYPE* buffer);
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer);
 
-static void* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer);
+static void* GetHeadAddress(const CIRCULARBUFFER_TYPE* buffer);
 static void* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer);
 static void* GetBaseAddress(const CIRCULARBUFFER_TYPE* buffer);
 static size_t GetHeadOffset(const CIRCULARBUFFER_TYPE* buffer);
@@ -97,7 +97,7 @@ bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
     //! Pre Condition: valid item
     if (item == NULL) return false;
     
-    memcpy(GetHeadPosition(buffer), item, GetItemSize(buffer));
+    memcpy(GetHeadAddress(buffer), item, GetItemSize(buffer));
     buffer->Size++;
     buffer->Head = (buffer->Head + 1) % buffer->Capacity;
     return true;
@@ -105,7 +105,7 @@ bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
 
 //! Private implementations
 
-static void* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer) {
+static void* GetHeadAddress(const CIRCULARBUFFER_TYPE* buffer) {
     return GetBaseAddress(buffer)+GetHeadOffset(buffer);
 }
 
