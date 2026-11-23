@@ -7,8 +7,8 @@
 static bool IsFull(const CIRCULARBUFFER_TYPE* buffer);
 static bool IsEmpty(const CIRCULARBUFFER_TYPE* buffer);
 static size_t GetItemSize(const CIRCULARBUFFER_TYPE* buffer);
-static CIRCULARBUTTER_ITEM_TYPE* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer);
-static CIRCULARBUTTER_ITEM_TYPE* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer);
+static void* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer);
+static void* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer);
 
 //! Public implementations
 
@@ -101,11 +101,11 @@ bool CircularBuffer_Queue(CIRCULARBUFFER_TYPE* buffer, const void* item) {
 
 //! Private implementations
 
-static CIRCULARBUTTER_ITEM_TYPE* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer) {
+static void* GetHeadPosition(const CIRCULARBUFFER_TYPE* buffer) {
     return buffer->Storage_Ptr+buffer->Head*buffer->Type_Size;
 }
 
-static CIRCULARBUTTER_ITEM_TYPE* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer) {
+static void* GetTailPosition(const CIRCULARBUFFER_TYPE* buffer) {
     return buffer->Storage_Ptr+buffer->Tail*buffer->Type_Size;
 }
 
