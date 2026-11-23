@@ -771,7 +771,37 @@ void test_GivenCharBuffer_WhenItemsAreQueuedAndDequeued_ThenReturnsThemInFifoOrd
 
 void test_GivenI2cSensorFrameBuffer_WhenFramesAreQueuedAndDequeued_ThenPreservesAllData(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    CIRCULARBUFFER_TYPE* frame_buf;
+    I2c_Sensor_Frame_t in_frame_1;
+    I2c_Sensor_Frame_t in_frame_2;
+    I2c_Sensor_Frame_t out_frame_1;
+    I2c_Sensor_Frame_t out_frame_2;
+
+    in_frame_1 = GetRealisticI2cSensorFrame(23.5f, 1013.25f, 650);
+    in_frame_2 = GetRealisticI2cSensorFrame(-4.2f, 985.0f, 820);
+    out_frame_1 = GetEmptyI2cSensorFrame();
+    out_frame_2 = GetEmptyI2cSensorFrame();
+
+    frame_buf = CircularBuffer_Create(sizeof(I2c_Sensor_Frame_t), 2);
+
+    (void) CircularBuffer_Queue(frame_buf, (const void*) &in_frame_1);
+    (void) CircularBuffer_Queue(frame_buf, (const void*) &in_frame_2);
+
+    (void) CircularBuffer_Dequeue(frame_buf, (void*) &out_frame_1);
+    (void) CircularBuffer_Dequeue(frame_buf, (void*) &out_frame_2);
+
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(
+        in_frame_1.raw_bytes,
+        out_frame_1.raw_bytes,
+        sizeof(I2c_Sensor_Frame_t)
+    );
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(
+        in_frame_2.raw_bytes,
+        out_frame_2.raw_bytes,
+        sizeof(I2c_Sensor_Frame_t)
+    );
+
+    CircularBuffer_Destroy(&frame_buf);
 }
 
 //! Helper functions
