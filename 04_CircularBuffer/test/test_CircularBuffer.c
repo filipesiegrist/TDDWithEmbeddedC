@@ -2,9 +2,30 @@
 #ifdef TEST
 
 #include "unity.h"
+#include <string.h>
 
 #include "CircularBuffer.h"
 #include "Memory.h"
+
+
+//! Custom Generic Types for Testing
+
+typedef union {
+    uint8_t raw_bytes[128];
+    struct {
+        uint8_t  device_address;
+        uint8_t  register_map_version;
+        uint16_t sequence_counter;
+        uint32_t acquisition_timestamp_ms;
+        float    temperature_celsius;
+        float    pressure_hpa;
+        uint16_t humidity_permille;
+        uint8_t  sensor_status_flags;
+        char     sensor_tag[16];
+        uint8_t  reserved_payload[91];
+        uint16_t crc16_checksum;
+    } telemetry;
+} I2c_Sensor_Frame_t;
 
 
 //! Helper variables
@@ -31,6 +52,13 @@ static void FillBufferWithFloats(
     CIRCULARBUFFER_TYPE* buf,
     uint16_t count,
     float start_value
+);
+
+static I2c_Sensor_Frame_t GetEmptyI2cSensorFrame(void);
+static I2c_Sensor_Frame_t GetRealisticI2cSensorFrame(
+    float temperature_celsius,
+    float pressure_hpa,
+    uint16_t humidity_permille
 );
 
 //! Helper defines
@@ -712,6 +740,18 @@ void test_GivenNullBuffer_WhenDequeue_ThenReturnFalse(void)
     );
 }
 
+//! Generic Type Support Tests
+
+void test_GivenCharBuffer_WhenItemsAreQueuedAndDequeued_ThenReturnsThemInFifoOrder(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
+
+void test_GivenI2cSensorFrameBuffer_WhenFramesAreQueuedAndDequeued_ThenPreservesAllData(void)
+{
+    TEST_IGNORE_MESSAGE("Not implemented yet");
+}
+
 //! Helper functions
 
 static CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void) {
@@ -759,6 +799,49 @@ static void FillBufferWithFloats(
         (void) CircularBuffer_Queue(buf, (void*) &val);
         val += 1.0f;
     }
+}
+
+static I2c_Sensor_Frame_t GetEmptyI2cSensorFrame(void)
+{
+    I2c_Sensor_Frame_t frame;
+    memset(&frame, 0, sizeof(I2c_Sensor_Frame_t));
+    return frame;
+}
+
+static I2c_Sensor_Frame_t GetRealisticI2cSensorFrame(
+    float temperature_celsius,
+    float pressure_hpa,
+    uint16_t humidity_permille
+)
+{
+    I2c_Sensor_Frame_t frame = GetEmptyI2cSensorFrame();
+
+    // Fixed protocol metadata & sensor identity
+    frame.telemetry.device_address           = 0x76;        // Typical BME280/BMP280 I2C address
+    frame.telemetry.register_map_version     = 0x02;
+    frame.telemetry.sequence_counter         = 42;
+    frame.telemetry.acquisition_timestamp_ms = 125480;
+    frame.telemetry.sensor_status_flags      = 0x81;        // Bit 7: Data Ready | Bit 0: Calibrated
+    strncpy(frame.telemetry.sensor_tag, "EVAP_CHAMBER_01", sizeof(frame.telemetry.sensor_tag) - 1);
+
+    // Dynamic environmental readings
+    frame.telemetry.temperature_celsius = temperature_celsius;
+    frame.telemetry.pressure_hpa        = pressure_hpa;
+    frame.telemetry.humidity_permille   = humidity_permille;
+
+    // Deterministic pattern in reserved bytes to catch partial-copy bugs across all 128 bytes
+    for (size_t i = 0; i < sizeof(frame.telemetry.reserved_payload); i++) {
+        frame.telemetry.reserved_payload[i] = (uint8_t)(0xA0 + (i & 0x0F));
+    }
+
+    // Simple additive checksum over the first 126 bytes
+    uint16_t checksum = 0;
+    for (size_t i = 0; i < (sizeof(I2c_Sensor_Frame_t) - sizeof(uint16_t)); i++) {
+        checksum += frame.raw_bytes[i];
+    }
+    frame.telemetry.crc16_checksum = checksum;
+
+    return frame;
 }
 
 #endif // TEST
