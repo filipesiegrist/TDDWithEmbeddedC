@@ -804,6 +804,263 @@ void test_GivenI2cSensorFrameBuffer_WhenFramesAreQueuedAndDequeued_ThenPreserves
     CircularBuffer_Destroy(&frame_buf);
 }
 
+//! Stress Tests
+
+void test_GivenDestroyedBuffer_WhenDestroyIsCalledAgain_ThenRemainsNullSafely(void)
+{
+    Simple_Float_Buffer = GetSimpleEmptyBuffer();
+
+    CircularBuffer_Destroy(&Simple_Float_Buffer);
+    CircularBuffer_Destroy(&Simple_Float_Buffer);
+
+    TEST_ASSERT_NULL(Simple_Float_Buffer);
+}
+
+void test_GivenSmallI2cSensorFrameBuffer_WhenCyclingThroughMultipleWrapArounds_ThenPreservesAllFrames(void)
+{
+    CIRCULARBUFFER_TYPE* frame_buf;
+    I2c_Sensor_Frame_t in_frame;
+    I2c_Sensor_Frame_t expected_frames[20];
+    I2c_Sensor_Frame_t out_frame;
+    const uint16_t capacity = 2;
+    const uint16_t total_cycles = 20;
+
+    frame_buf = CircularBuffer_Create(sizeof(I2c_Sensor_Frame_t), capacity);
+
+    in_frame = GetRealisticI2cSensorFrame(20.0f, 1010.0f, 500);
+    expected_frames[0] = in_frame;
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(frame_buf, (const void*) &in_frame));
+
+    for (uint16_t i = 1; i < total_cycles; i++) {
+        float temp = 20.0f + (float)i * 0.5f;
+        float press = 1010.0f + (float)i;
+        uint16_t hum = (uint16_t)(500 + (i * 5));
+
+        in_frame = GetRealisticI2cSensorFrame(temp, press, hum);
+        expected_frames[i] = in_frame;
+
+        TEST_ASSERT_TRUE(CircularBuffer_Queue(frame_buf, (const void*) &in_frame));
+        TEST_ASSERT_TRUE(CircularBuffer_IsFull(frame_buf));
+
+        out_frame = GetEmptyI2cSensorFrame();
+        TEST_ASSERT_TRUE(CircularBuffer_Dequeue(frame_buf, (void*) &out_frame));
+        TEST_ASSERT_EQUAL_UINT8_ARRAY(
+            expected_frames[i - 1].raw_bytes,
+            out_frame.raw_bytes,
+            sizeof(I2c_Sensor_Frame_t)
+        );
+    }
+
+    out_frame = GetEmptyI2cSensorFrame();
+    TEST_ASSERT_TRUE(CircularBuffer_Dequeue(frame_buf, (void*) &out_frame));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(
+        expected_frames[total_cycles - 1].raw_bytes,
+        out_frame.raw_bytes,
+        sizeof(I2c_Sensor_Frame_t)
+    );
+    TEST_ASSERT_TRUE(CircularBuffer_IsEmpty(frame_buf));
+    TEST_ASSERT_EQUAL_UINT16(0, CircularBuffer_GetSize(frame_buf));
+
+    CircularBuffer_Destroy(&frame_buf);
+}
+
+void test_GivenCharBuffer_WhenRepeatedlyFillingPartiallyDrainingAndRefilling_ThenMaintainsFifoAndState(void)
+{
+    CIRCULARBUFFER_TYPE* char_buf;
+    char next_in = 'A';
+    char next_out = 'A';
+    char out_item = 0;
+    const uint16_t capacity = 3;
+    const uint16_t rounds = 6;
+
+    char_buf = CircularBuffer_Create(sizeof(char), capacity);
+
+    for (uint16_t r = 0; r < rounds; r++) {
+        while (!CircularBuffer_IsFull(char_buf)) {
+            TEST_ASSERT_TRUE(CircularBuffer_Queue(char_buf, (const void*) &next_in));
+            next_in++;
+        }
+        TEST_ASSERT_EQUAL_UINT16(capacity, CircularBuffer_GetSize(char_buf));
+
+        for (uint16_t d = 0; d < 2; d++) {
+            TEST_ASSERT_TRUE(CircularBuffer_Dequeue(char_buf, (void*) &out_item));
+            TEST_ASSERT_EQUAL_CHAR(next_out, out_item);
+            next_out++;
+        }
+        TEST_ASSERT_FALSE(CircularBuffer_IsFull(char_buf));
+        TEST_ASSERT_EQUAL_UINT16(1, CircularBuffer_GetSize(char_buf));
+    }
+
+    while (!CircularBuffer_IsEmpty(char_buf)) {
+        TEST_ASSERT_TRUE(CircularBuffer_Dequeue(char_buf, (void*) &out_item));
+        TEST_ASSERT_EQUAL_CHAR(next_out, out_item);
+        next_out++;
+    }
+
+    TEST_ASSERT_EQUAL_UINT16(0, CircularBuffer_GetSize(char_buf));
+    TEST_ASSERT_FALSE(CircularBuffer_IsFull(char_buf));
+
+    CircularBuffer_Destroy(&char_buf);
+}
+
+void test_GivenBufferWithPhaseShiftedQueueAndDequeue_WhenSteppingAcrossBoundaries_ThenPreservesFifoOrder(void)
+{
+    CIRCULARBUFFER_TYPE* buf;
+    float in_val = 1.0f;
+    float expected_out = 1.0f;
+    float out_val = 0.0f;
+    const uint16_t capacity = 4;
+    const uint16_t steps = 25;
+
+    buf = CircularBuffer_Create(sizeof(float), capacity);
+
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(buf, (const void*) &in_val));
+    in_val += 1.0f;
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(buf, (const void*) &in_val));
+    in_val += 1.0f;
+
+    for (uint16_t i = 0; i < steps; i++) {
+        TEST_ASSERT_TRUE(CircularBuffer_Queue(buf, (const void*) &in_val));
+        in_val += 1.0f;
+
+        TEST_ASSERT_TRUE(CircularBuffer_Dequeue(buf, (void*) &out_val));
+        TEST_ASSERT_EQUAL_FLOAT(expected_out, out_val);
+        expected_out += 1.0f;
+
+        TEST_ASSERT_EQUAL_UINT16(2, CircularBuffer_GetSize(buf));
+    }
+
+    for (uint16_t i = 0; i < 2; i++) {
+        TEST_ASSERT_TRUE(CircularBuffer_Dequeue(buf, (void*) &out_val));
+        TEST_ASSERT_EQUAL_FLOAT(expected_out, out_val);
+        expected_out += 1.0f;
+    }
+
+    TEST_ASSERT_TRUE(CircularBuffer_IsEmpty(buf));
+    CircularBuffer_Destroy(&buf);
+}
+
+void test_GivenMediumBufferUnderSustainedBatchLoad_WhenStreamingHundredsOfItems_ThenPreservesExactSequence(void)
+{
+    CIRCULARBUFFER_TYPE* buf;
+    uint16_t next_enqueue_seq = 1;
+    uint16_t next_dequeue_seq = 1;
+    uint16_t out_seq = 0;
+    const uint16_t capacity = 16;
+    const uint16_t batches = 60;
+
+    buf = CircularBuffer_Create(sizeof(uint16_t), capacity);
+
+    for (uint16_t b = 0; b < batches; b++) {
+        uint16_t to_enqueue = (uint16_t)(3 + (b % 5));
+        uint16_t to_dequeue = (uint16_t)(2 + ((b + 1) % 4));
+
+        for (uint16_t i = 0; i < to_enqueue; i++) {
+            if (!CircularBuffer_IsFull(buf)) {
+                TEST_ASSERT_TRUE(CircularBuffer_Queue(buf, (const void*) &next_enqueue_seq));
+                next_enqueue_seq++;
+            }
+        }
+
+        for (uint16_t i = 0; i < to_dequeue; i++) {
+            if (!CircularBuffer_IsEmpty(buf)) {
+                TEST_ASSERT_TRUE(CircularBuffer_Dequeue(buf, (void*) &out_seq));
+                TEST_ASSERT_EQUAL_UINT16(next_dequeue_seq, out_seq);
+                next_dequeue_seq++;
+            }
+        }
+    }
+
+    while (!CircularBuffer_IsEmpty(buf)) {
+        TEST_ASSERT_TRUE(CircularBuffer_Dequeue(buf, (void*) &out_seq));
+        TEST_ASSERT_EQUAL_UINT16(next_dequeue_seq, out_seq);
+        next_dequeue_seq++;
+    }
+
+    TEST_ASSERT_EQUAL_UINT16(next_enqueue_seq, next_dequeue_seq);
+    TEST_ASSERT_EQUAL_UINT16(0, CircularBuffer_GetSize(buf));
+
+    CircularBuffer_Destroy(&buf);
+}
+
+void test_GivenCharAndI2cFrameBuffersRunningConcurrently_WhenCyclingBoth_ThenNeitherCorruptsTheOther(void)
+{
+    CIRCULARBUFFER_TYPE* char_buf;
+    CIRCULARBUFFER_TYPE* frame_buf;
+
+    const char char_a = 'a';
+    const char char_b = 'b';
+    const char char_c = 'c';
+    char out_char = 0;
+
+    I2c_Sensor_Frame_t frame_1;
+    I2c_Sensor_Frame_t frame_2;
+    I2c_Sensor_Frame_t frame_3;
+    I2c_Sensor_Frame_t out_frame;
+
+    // Create two buffers of capacity 2 with very different item sizes (1 byte vs 128 bytes)[cite: 15]
+    char_buf = CircularBuffer_Create(sizeof(char), 2);
+    frame_buf = CircularBuffer_Create(sizeof(I2c_Sensor_Frame_t), 2);
+
+    // Build distinct telemetry frames so any byte shift or cross-buffer mix-up stands out
+    frame_1 = GetRealisticI2cSensorFrame(10.0f, 1000.0f, 400);
+    frame_2 = GetRealisticI2cSensorFrame(20.0f, 1010.0f, 500);
+    frame_3 = GetRealisticI2cSensorFrame(30.0f, 1020.0f, 600);
+
+    // Fill both buffers to capacity (2 items each)
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(char_buf, (const void*) &char_a));
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(char_buf, (const void*) &char_b));
+
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(frame_buf, (const void*) &frame_1));
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(frame_buf, (const void*) &frame_2));
+
+    // Pop one item from each buffer so both have room to wrap around on the next push
+    out_char = 0;
+    TEST_ASSERT_TRUE(CircularBuffer_Dequeue(char_buf, (void*) &out_char));
+    TEST_ASSERT_EQUAL_CHAR(char_a, out_char);
+
+    out_frame = GetEmptyI2cSensorFrame();
+    TEST_ASSERT_TRUE(CircularBuffer_Dequeue(frame_buf, (void*) &out_frame));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(
+        frame_1.raw_bytes,
+        out_frame.raw_bytes,
+        sizeof(I2c_Sensor_Frame_t)
+    );
+
+    // Push a third item into both buffers, forcing head wrap-around
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(char_buf, (const void*) &char_c));
+    TEST_ASSERT_TRUE(CircularBuffer_Queue(frame_buf, (const void*) &frame_3));
+
+    // Drain the remaining items in FIFO order (char_b then char_c; frame_2 then frame_3)
+    out_char = 0;
+    TEST_ASSERT_TRUE(CircularBuffer_Dequeue(char_buf, (void*) &out_char));
+    TEST_ASSERT_EQUAL_CHAR(char_b, out_char);
+
+    out_char = 0;
+    TEST_ASSERT_TRUE(CircularBuffer_Dequeue(char_buf, (void*) &out_char));
+    TEST_ASSERT_EQUAL_CHAR(char_c, out_char);
+
+    out_frame = GetEmptyI2cSensorFrame();
+    TEST_ASSERT_TRUE(CircularBuffer_Dequeue(frame_buf, (void*) &out_frame));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(
+        frame_2.raw_bytes,
+        out_frame.raw_bytes,
+        sizeof(I2c_Sensor_Frame_t)
+    );
+
+    out_frame = GetEmptyI2cSensorFrame();
+    TEST_ASSERT_TRUE(CircularBuffer_Dequeue(frame_buf, (void*) &out_frame));
+    TEST_ASSERT_EQUAL_UINT8_ARRAY(
+        frame_3.raw_bytes,
+        out_frame.raw_bytes,
+        sizeof(I2c_Sensor_Frame_t)
+    );
+
+    // Clean up both instances
+    CircularBuffer_Destroy(&char_buf);
+    CircularBuffer_Destroy(&frame_buf);
+}
+
 //! Helper functions
 
 static CIRCULARBUFFER_TYPE* GetSimpleEmptyBuffer(void) {

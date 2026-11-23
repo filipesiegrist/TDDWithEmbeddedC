@@ -94,7 +94,7 @@ Operations receiving invalid or uninitialized buffer instances must immediately 
 - [X] **Multiple items count tracking**: Verify that inserting N generic items updates `GetCount` to N, and removing M items updates `GetCount` to N - M.
 - [X] **Interleaved Put and Get with generic types**: Verify that performing alternating operations (e.g., Put, Put, Get, Put, Get) maintains strict FIFO order and correct byte copying.
 - [X] **Multiple Buffers in parallel**: Create two buffers and guarantee both don't interfere with each other.
-- [ ] **Multiple custom types / Structs FIFO ordering**: Verify that inserting and retrieving custom `struct` instances copies all internal fields correctly without data corruption.
+- [X] **Multiple custom types / Structs FIFO ordering**: Verify that inserting and retrieving custom `struct` instances copies all internal fields correctly without data corruption.
 
 ### B - Boundaries
 - [X] **Buffer reaches full capacity**: Verify that adding items up to maximum capacity transitions `IsFull` to true.
@@ -102,7 +102,7 @@ Operations receiving invalid or uninitialized buffer instances must immediately 
 - [X] **Transition out of full state**: Verify that removing a single item from a full buffer transitions `IsFull` back to false.
 - [X] **Pointer Wrap-Around (Write)**: Verify that inserting generic items past the physical array boundary correctly calculates byte offsets and wraps around to index 0.
 - [X] **Pointer Wrap-Around (Read)**: Verify that retrieving generic items when the read index reaches the array boundary correctly wraps around to index 0 and maintains byte integrity.
-- [ ] **Continuous Wrap-Around cycles**: Verify that the buffer operates correctly after multiple full cycles of wrapping around capacity limits for various element sizes.
+- [X] **Continuous Wrap-Around cycles**: Verify that the buffer operates correctly after multiple full cycles of wrapping around capacity limits for various element sizes.
 
 ### I - Interfaces
 - [X] **Create lifecycle with element size**: Verify that `Create` initializes all internal variables, pointers, capacity, and `element_size` settings correctly.
@@ -129,6 +129,6 @@ Operations receiving invalid or uninitialized buffer instances must immediately 
 - [X] Destroy do actually work
 - [X] Check for NULL at the Internal Array Structure
 - [X] Memory limits/overflow at size allocation
-- [ ] Multiple Types
-- [ ] Memory Integrity throughout Buffer stress test
+- [X] Multiple Types
+- [X] Memory Integrity throughout Buffer stress test
 - [X] Prevent adding item to a full buffer
