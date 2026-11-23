@@ -744,7 +744,29 @@ void test_GivenNullBuffer_WhenDequeue_ThenReturnFalse(void)
 
 void test_GivenCharBuffer_WhenItemsAreQueuedAndDequeued_ThenReturnsThemInFifoOrder(void)
 {
-    TEST_IGNORE_MESSAGE("Not implemented yet");
+    CIRCULARBUFFER_TYPE* char_buf;
+    const char in_1 = 'A';
+    const char in_2 = 'B';
+    const char in_3 = 'C';
+    char out_1 = 0;
+    char out_2 = 0;
+    char out_3 = 0;
+
+    char_buf = CircularBuffer_Create(sizeof(char), 3);
+
+    (void) CircularBuffer_Queue(char_buf, (void*) &in_1);
+    (void) CircularBuffer_Queue(char_buf, (void*) &in_2);
+    (void) CircularBuffer_Queue(char_buf, (void*) &in_3);
+
+    (void) CircularBuffer_Dequeue(char_buf, (void*) &out_1);
+    (void) CircularBuffer_Dequeue(char_buf, (void*) &out_2);
+    (void) CircularBuffer_Dequeue(char_buf, (void*) &out_3);
+
+    TEST_ASSERT_EQUAL_CHAR(in_1, out_1);
+    TEST_ASSERT_EQUAL_CHAR(in_2, out_2);
+    TEST_ASSERT_EQUAL_CHAR(in_3, out_3);
+
+    CircularBuffer_Destroy(&char_buf);
 }
 
 void test_GivenI2cSensorFrameBuffer_WhenFramesAreQueuedAndDequeued_ThenPreservesAllData(void)
